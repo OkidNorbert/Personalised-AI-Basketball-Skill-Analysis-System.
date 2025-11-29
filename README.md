@@ -40,7 +40,7 @@ This Final Year Project addresses the lack of accessible basketball skill analys
 
 Basketball skill analysis has evolved from subjective coaching observations to objective, AI-driven skill assessment. Early biomechanical systems using markers and infrared cameras were expensive and confined to labs. The shift to computer vision enabled markerless motion analysis, and later, algorithms like MediaPipe democratized this further by operating on consumer hardware, making detailed skill assessment accessible.
 
-The current frontier uses deep learning for personalized skill insights. This project builds on that progression, implementing a technical stack specifically for low-resource environments in Uganda. The goal is to establish ideal skill metrics from proficient players and use those benchmarks to help improve individual basketball skills for players at Uganda Christian University (UCU) and across Uganda.
+The current frontier uses deep learning for personalized skill insights. This project builds on that progression, implementing a technical stack optimized for Ugandan basketball contexts. While developed using high-performance GPU hardware (NVIDIA RTX 4080 Super) for efficient training, the system is designed for flexible deployment across various hardware configurations. The goal is to establish ideal skill metrics from proficient players and use those benchmarks to help improve individual basketball skills for players at Uganda Christian University (UCU) and across Uganda.
 
 ### The Problem
 - **Lack of Skill-Specific Analysis**: No accessible tools to analyze individual basketball skills (shooting, dribbling, passing, defense) in Uganda
@@ -53,34 +53,34 @@ The current frontier uses deep learning for personalized skill insights. This pr
 ### Our Solution
 An AI-powered **individual basketball skill analysis system** that:
 1. **Analyzes Individual Skills**: Identifies and analyzes specific basketball skills (shooting, dribbling, passing, defense) from video recordings
-2. **Establishes Ideal Metrics**: Learns ideal skill metrics from proficient players' videos to create benchmarks for good basketball skills
+2. **Establishes Ideal Metrics**: Learns ideal skill metrics from proficient players' videos using coach-validated benchmarks to create standards for good basketball skills
 3. **Measures Skill Performance**: Calculates detailed metrics (jump height, form, speed, accuracy) for each individual skill
-4. **Provides Personalized Improvement**: Compares individual player skills against ideal metrics and generates targeted improvement recommendations
-5. **Uganda-Focused**: Designed specifically for Ugandan basketball contexts, with UCU as the primary test point
-6. **Low-Resource Optimized**: Operates on standard hardware without GPU dependency, suitable for university laboratory computers
+4. **Provides Personalized Improvement**: Compares individual player skills against ideal metrics and generates targeted, actionable improvement recommendations
+5. **Uganda-Focused**: Designed specifically for Ugandan basketball contexts, with UCU as the primary test point and validation site
+6. **Flexible Deployment**: Trained on high-performance hardware (NVIDIA GPU) but designed to run on both GPU and CPU systems, making it accessible for various deployment scenarios
 
 ### Impact
 - **Individual Skill Analysis**: Analyze specific basketball skills for players at UCU and across Uganda
-- **Ideal Metrics Database**: Establish baseline metrics for good basketball skills from proficient players
-- **Personalized Improvement**: Help individual players improve by comparing their skills against ideal metrics
-- **<5 seconds** analysis time per video
-- **96%** accuracy in skill classification (VideoMAE)
-- **97%+ mAP** in player detection (YOLOv11)
-- **Free & accessible** for UCU Cannons and Ugandan basketball academies
-- **CPU-optimized** for low-resource deployment
+- **Ideal Metrics Database**: Establish baseline metrics for good basketball skills from proficient players, validated by UCU Cannons coaches
+- **Personalized Improvement**: Help individual players improve by comparing their skills against ideal metrics with measurable outcomes
+- **Fast Analysis**: Efficient processing time per video (optimized for both GPU and CPU deployment)
+- **High Accuracy**: Target 96% accuracy in skill classification (VideoMAE, validated on local dataset)
+- **Robust Detection**: 97%+ mAP in player detection (YOLOv11)
+- **Accessible Design**: Optimized for various hardware configurations, from high-performance GPUs to standard university laboratory computers
+- **Measurable Outcomes**: Track skill improvement over time with before/after comparisons
 
 ---
 
 ## ✨ Features
 
 ### 🤖 AI-Powered Skill Analysis
-- **Individual Skill Classification**: Identify and classify specific basketball skills (shooting, dribbling, passing, defense) with **96% accuracy** using VideoMAE vision transformer
-- **Pose Estimation**: Track **33 body keypoints** in real-time with MediaPipe (CPU-optimized, no GPU required) to analyze skill form and technique
-- **Object Detection**: Detect players, basketball, and court elements with **97%+ mAP** using YOLOv11
-- **Skill Metrics Calculation**: Calculate detailed metrics for each skill (jump height, shooting form, dribbling speed, passing accuracy, defensive stance)
-- **Ideal Metrics Learning**: System learns ideal skill metrics from proficient players' videos to establish benchmarks
-- **Personalized Skill Improvement**: Compare individual player skills against ideal metrics and provide targeted improvement recommendations
-- **Low-Resource Deployment**: Optimized for standard university laboratory computers at UCU
+- **Individual Skill Classification**: Identify and classify specific basketball skills (shooting, dribbling, passing, defense) using VideoMAE vision transformer, fine-tuned on local Ugandan dataset
+- **Pose Estimation**: Track **33 body keypoints** in real-time with MediaPipe to analyze skill form and technique (runs efficiently on both GPU and CPU)
+- **Object Detection**: Detect players, basketball, and court elements with **97%+ mAP** using YOLOv11-nano
+- **Skill Metrics Calculation**: Calculate detailed metrics for each skill (jump height, shooting form, dribbling speed, passing accuracy, defensive stance, release angle, follow-through)
+- **Ideal Metrics Learning**: System learns ideal skill metrics from proficient players' videos, validated by UCU Cannons coaches, to establish evidence-based benchmarks
+- **Personalized Skill Improvement**: Compare individual player skills against ideal metrics and provide targeted, actionable improvement recommendations with specific focus areas
+- **Flexible Deployment**: Trained on high-performance hardware (NVIDIA RTX 4080 Super) but designed to run on various hardware configurations
 
 ### 📊 Interactive Dashboard
 - **Video Upload**: Drag-and-drop interface with progress tracking
@@ -115,9 +115,9 @@ An AI-powered **individual basketball skill analysis system** that:
 | **Python** | 3.11+ | Programming language |
 | **FastAPI** | 0.115+ | API framework |
 | **PyTorch** | 2.5+ | Deep learning |
-| **YOLOv11-nano** | Latest | Object detection (97%+ mAP, CPU-optimized) |
-| **MediaPipe** | 0.10.9 | Pose estimation (33 keypoints, CPU-only) |
-| **VideoMAE** | Latest | Skill classification (96% accuracy) |
+| **YOLOv11-nano** | Latest | Object detection (97%+ mAP, GPU-trained, CPU-capable) |
+| **MediaPipe** | 0.10.9 | Pose estimation (33 keypoints, GPU/CPU compatible) |
+| **VideoMAE** | Latest | Skill classification (GPU-trained, fine-tuned on local dataset) |
 | **OpenCV** | 4.10+ | Video processing |
 
 ---
@@ -171,10 +171,20 @@ Final-Year-Project/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
+**Development Environment:**
 - **Python 3.11+**
 - **Node.js 18+** and npm
 - **Git**
-- (Optional) **NVIDIA GPU** with CUDA for faster processing
+- **NVIDIA GPU** with CUDA (recommended for model training and development)
+  - System developed and trained on NVIDIA RTX 4080 Super
+  - GPU significantly accelerates model training and inference
+
+**Deployment Environment:**
+- System designed to run on both GPU and CPU systems
+- CPU-only deployment possible for inference (slower but functional)
+- Minimum: Standard university laboratory computers
+- Recommended: GPU-enabled systems for optimal performance
 
 ### Installation
 
@@ -278,16 +288,18 @@ npm run dev
 
 **Stage 2: Detailed Pose Estimation (MediaPipe)**
 - Extraction of 33 body keypoints with 2D/3D coordinates
-- Computation of biomechanical metrics: joint angles and limb velocities
-- Temporal smoothing for stable pose estimation
-- Robust to outdoor lighting variations
+- Computation of biomechanical metrics: joint angles, limb velocities, and movement patterns
+- Temporal smoothing for stable pose estimation across video frames
+- Robust to outdoor lighting variations typical of Ugandan courts
+- Efficient processing on both GPU and CPU hardware
 
 **Stage 3: Skill Recognition and Analysis (VideoMAE)**
 - Classification of individual basketball skills (shooting, dribbling, passing, defense) from pose sequence analysis
-- Fine-tuning on local Ugandan dataset (UCU Cannons) for contextual accuracy
+- Fine-tuning on local Ugandan dataset (UCU Cannons) using NVIDIA RTX 4080 Super for training
 - Temporal pattern recognition for complex skill movement understanding
 - Self-supervised pre-training for data efficiency
-- Learning ideal skill metrics from proficient players to establish benchmarks
+- **Ideal Metrics Learning**: System analyzes videos of proficient players (coach-validated) to extract biomechanical patterns, performance metrics, and form characteristics that define "good" execution of each skill
+- Benchmarks established through statistical analysis of proficient player data, validated by UCU Cannons coaching staff
 
 ---
 
@@ -319,9 +331,21 @@ Model development employs:
 - **MediaPipe**: Off-the-shelf pose estimation with basketball skill-specific post-processing
 - **VideoMAE**: Kinetics-400 pre-trained model adapted for local skill recognition using UCU Cannons dataset
 
+**Training Hardware**: Models trained on NVIDIA RTX 4080 Super GPU for optimal performance and faster iteration cycles.
+
 Training utilizes **70-15-15 data split** (training-validation-testing) with evaluation metrics including accuracy, precision, recall, F1-score, and computational efficiency measures.
 
-**Ideal Metrics Learning**: The system analyzes videos of proficient players to establish baseline metrics for good basketball skills. These ideal metrics are then used as benchmarks to help improve other individual players' skills.
+### Ideal Metrics Methodology
+
+**Ideal Metrics Learning Process**:
+1. **Proficient Player Identification**: UCU Cannons coaches identify proficient players for each skill (shooting, dribbling, passing, defense)
+2. **Data Collection**: Collect multiple video samples from proficient players performing each skill
+3. **Metric Extraction**: System extracts biomechanical metrics (joint angles, velocities, timing, form characteristics) from proficient player videos
+4. **Statistical Analysis**: Calculate mean, median, and optimal ranges for each metric to establish benchmarks
+5. **Coach Validation**: UCU Cannons coaches review and validate the established ideal metrics
+6. **Benchmark Database**: Create a database of ideal metrics for each skill that serves as the standard for comparison
+
+**Application**: Individual player videos are analyzed and compared against these validated ideal metrics to identify specific areas for improvement, generating personalized, actionable recommendations.
 
 ### Final Year Project Requirements
 - ✅ **70%+ AI/ML Focus**: Deep learning, computer vision, pose estimation for individual skill analysis
@@ -360,11 +384,11 @@ Current commercial systems like Catapult and HomeCourt are designed for general 
 
 The technical stack addresses three key requirements:
 
-1. **Computational Efficiency**: All three components were selected with low-resource deployment in mind. YOLO's efficient architecture provides real-time performance, MediaPipe's CPU-optimized design eliminates GPU dependency, and VideoMAE's data efficiency reduces training requirements.
+1. **Computational Efficiency**: All three components were selected for efficient deployment. YOLO's efficient architecture provides real-time performance, MediaPipe works on both GPU and CPU, and VideoMAE's data efficiency reduces training requirements. While trained on high-performance GPU hardware, the system can run on various hardware configurations.
 
-2. **Adaptability to Local Conditions**: Outdoor basketball courts in Uganda present unique challenges including variable lighting, diverse player physiques, and mobile phone video quality. MediaPipe's robustness to lighting variations, YOLO's strong generalization capabilities, and VideoMAE's ability to learn from limited data make this stack particularly suitable.
+2. **Adaptability to Local Conditions**: Outdoor basketball courts in Uganda present unique challenges including variable lighting, diverse player physiques, and mobile phone video quality. MediaPipe's robustness to lighting variations, YOLO's strong generalization capabilities, and VideoMAE's ability to learn from limited local data make this stack particularly suitable for Ugandan conditions.
 
-3. **Affordability and Accessibility**: The lack of affordable and contextually applicable basketball skill analysis tools for African environments highlights the need for localized AI-driven solutions tailored to Ugandan basketball skill development, with UCU as the core test point and validation site.
+3. **Contextual Relevance**: The lack of contextually applicable basketball skill analysis tools for African environments highlights the need for localized AI-driven solutions tailored to Ugandan basketball skill development. The system is specifically designed and validated for Ugandan players, with UCU as the core test point and validation site.
 
 ---
 
@@ -373,12 +397,13 @@ The technical stack addresses three key requirements:
 ### Target Benchmarks
 | Metric | Target | Status |
 |--------|--------|--------|
-| Skill Classification Accuracy | ≥96% | 🎯 (VideoMAE) |
+| Skill Classification Accuracy | ≥96% | 🎯 (VideoMAE, validated on local dataset) |
 | Player Detection mAP | ≥97% | 🎯 (YOLOv11) |
 | Pose Detection Rate | ≥90% | 🎯 (MediaPipe) |
-| Ideal Metrics Learning | Established | 🎯 (From proficient players) |
-| Average Inference Time | <100ms | ⚡ |
-| API Response Time | <500ms | ⚡ |
+| Ideal Metrics Learning | Coach-validated benchmarks | 🎯 (From proficient players, validated by UCU coaches) |
+| Inference Time (GPU) | <100ms | ⚡ (NVIDIA RTX 4080 Super) |
+| Inference Time (CPU) | <500ms | ⚡ (Standard lab computers) |
+| API Response Time | <1s | ⚡ (End-to-end processing) |
 | Frontend Performance | 60 FPS | ⚡ |
 
 ### Evaluation Methodology
@@ -394,9 +419,11 @@ System validation incorporates both technical and user-centered approaches:
 
 **User Evaluation:**
 - Coach usability testing with UCU Cannons training staff
-- Player skill improvement validation: Testing if recommendations based on ideal metrics help improve individual skills
-- Feedback sessions on skill analysis relevance and interface usability
+- **Measurable Skill Improvement**: Longitudinal studies tracking if recommendations based on ideal metrics lead to actual skill improvement over time
+- **Before/After Analysis**: Compare player skill metrics before and after implementing recommendations
+- Feedback sessions on skill analysis relevance, recommendation quality, and interface usability
 - Comparative analysis against traditional coaching methods for skill development
+- **Validation of Ideal Metrics**: Coach confirmation that established benchmarks accurately represent good skill execution
 
 ### Dataset Requirements
 - **700+ video clips** (5-10 seconds each) from UCU Cannons training sessions
@@ -479,7 +506,7 @@ The project follows a structured **16-week development timeline** designed to en
 | **Weeks 1–2** | Proposal finalization, requirements gathering, stakeholder consultations, and seeking ethical approval for data collection |
 | **Weeks 3–5** | Dataset recording at UCU and selected outdoor basketball courts across Uganda, focusing on individual skill analysis |
 | **Weeks 6–8** | Video annotation, preprocessing, and structuring of the pose estimation dataset |
-| **Weeks 9–11** | Training and testing of the AI models (YOLOv11 for detection, MediaPipe for pose, VideoMAE for skill classification). Learning ideal skill metrics from proficient players' videos. |
+| **Weeks 9–11** | Training and testing of the AI models using NVIDIA RTX 4080 Super GPU (YOLOv11 for detection, MediaPipe for pose, VideoMAE for skill classification). Learning ideal skill metrics from proficient players' videos with coach validation. |
 | **Weeks 12–13** | Backend (FastAPI) and frontend (React) development, followed by system integration |
 | **Weeks 14–15** | Usability testing with UCU Cannons coaches and players; validation of skill analysis and improvement recommendations; system refinement based on feedback |
 | **Week 16** | Final documentation, project submission, and preparation for the defense presentation |
@@ -491,6 +518,25 @@ The research adheres to ethical standards through:
 - Data anonymization and privacy protection protocols
 - Institutional approval from Uganda Christian University
 - Transparent communication of system capabilities and limitations
+
+### Deployment Considerations
+
+**Development Environment:**
+- System developed and trained using NVIDIA RTX 4080 Super GPU
+- High-performance hardware enables faster model training and iteration
+- GPU acceleration significantly reduces training time for VideoMAE fine-tuning
+
+**Deployment Flexibility:**
+- **GPU Deployment**: Optimal performance for real-time analysis (recommended for production)
+- **CPU Deployment**: Functional for inference, suitable for resource-constrained environments
+- System architecture designed to automatically detect and utilize available hardware
+- Can be deployed on university laboratory computers, cloud services, or dedicated servers
+
+**Commercial Use:**
+- This is an academic research project developed as a Final Year Project
+- Future commercial deployment and pricing models are not yet determined
+- Current focus is on validation and proof-of-concept at UCU
+- For inquiries about future deployment or commercial use, please contact the project team
 
 ## 📚 Additional Documentation
 
