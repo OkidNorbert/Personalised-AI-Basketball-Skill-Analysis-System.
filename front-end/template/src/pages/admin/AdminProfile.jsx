@@ -17,7 +17,7 @@ const compressImage = async (imageFile, maxSizeMB = 0.8) => {
         const canvas = document.createElement('canvas');
         let width = img.width;
         let height = img.height;
-        
+
         // Calculate new dimensions while maintaining aspect ratio
         const maxSize = 800; // max dimension
         if (width > height && width > maxSize) {
@@ -27,12 +27,12 @@ const compressImage = async (imageFile, maxSizeMB = 0.8) => {
           width = Math.round((width * maxSize) / height);
           height = maxSize;
         }
-        
+
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        
+
         // Convert to blob with quality setting
         canvas.toBlob(
           (blob) => {
@@ -76,11 +76,11 @@ const AdminProfile = () => {
     const fetchProfile = async () => {
       try {
         setIsLoading(true);
-        
+
         // Fetch profile from API
         const response = await adminAPI.getProfile();
         const adminData = response.data;
-        
+
         if (adminData) {
           // Set profile data from API response
           setProfile({
@@ -100,7 +100,7 @@ const AdminProfile = () => {
             const nameParts = user.name ? user.name.split(' ') : ['Admin', 'User'];
             const firstName = nameParts[0] || 'Admin';
             const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'User';
-            
+
             setProfile({
               firstName: firstName,
               lastName: lastName,
@@ -118,13 +118,13 @@ const AdminProfile = () => {
         console.error('Error fetching profile:', err);
         setError('Failed to load profile data');
         setIsLoading(false);
-        
+
         // Fallback to user context if API call fails
         if (user) {
           const nameParts = user.name ? user.name.split(' ') : ['Admin', 'User'];
           const firstName = nameParts[0] || 'Admin';
           const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'User';
-          
+
           setProfile({
             firstName: firstName,
             lastName: lastName,
@@ -157,13 +157,13 @@ const AdminProfile = () => {
         setError('Image size should be less than 10MB');
         return;
       }
-      
+
       try {
         setUploadProgress(10);
         // Compress the image to reduce size
         const compressedBlob = await compressImage(file);
         setUploadProgress(50);
-        
+
         const reader = new FileReader();
         reader.onloadend = () => {
           setPreviewImage(reader.result);
@@ -172,7 +172,7 @@ const AdminProfile = () => {
             profilePicture: reader.result
           }));
           setUploadProgress(100);
-          
+
           // Reset progress bar after a delay
           setTimeout(() => {
             setUploadProgress(0);
@@ -192,7 +192,7 @@ const AdminProfile = () => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Prepare the profile data for the API
       const profileData = {
         firstName: profile.firstName,
@@ -203,10 +203,10 @@ const AdminProfile = () => {
         // Only send the profile picture if it's changed (to reduce payload size)
         profilePicture: profile.profilePicture
       };
-      
+
       // Call the API to update the profile
       const response = await adminAPI.updateProfile(profileData);
-      
+
       // Update the user context with the new profile data
       const updatedUserData = {
         name: `${profile.firstName} ${profile.lastName}`,
@@ -215,18 +215,18 @@ const AdminProfile = () => {
         address: profile.address,
         profilePicture: profile.profilePicture
       };
-      
+
       updateUser(updatedUserData);
-      
+
       // Update local storage with new user data
       localStorage.setItem('userName', `${profile.firstName} ${profile.lastName}`);
       localStorage.setItem('userProfilePicture', profile.profilePicture);
-      
+
       // Show success message with toast
       toast.success('Profile updated successfully!');
       setSuccessMessage('Profile updated successfully');
       setTimeout(() => setSuccessMessage(''), 3000);
-      
+
       // Exit edit mode
       setIsEditing(false);
       setIsLoading(false);
@@ -241,9 +241,8 @@ const AdminProfile = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <div className={`animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 ${
-          isDarkMode ? 'border-yellow-400' : 'border-purple-600'
-        }`}></div>
+        <div className={`animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 ${isDarkMode ? 'border-yellow-400' : 'border-purple-600'
+          }`}></div>
       </div>
     );
   }
@@ -252,12 +251,10 @@ const AdminProfile = () => {
     <div className={`max-w-5xl mx-auto ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
       {/* Decorative background elements */}
       <div className="absolute top-0 left-0 right-0 bottom-0 -z-10 overflow-hidden">
-        <div className={`w-64 h-64 rounded-full absolute -top-20 -left-20 ${
-          isDarkMode ? 'bg-purple-900/20' : 'bg-blue-200/30'
-        }`}></div>
-        <div className={`w-96 h-96 rounded-full absolute -bottom-48 -right-48 ${
-          isDarkMode ? 'bg-indigo-900/20' : 'bg-indigo-100/30'
-        }`}></div>
+        <div className={`w-64 h-64 rounded-full absolute -top-20 -left-20 ${isDarkMode ? 'bg-purple-900/20' : 'bg-blue-200/30'
+          }`}></div>
+        <div className={`w-96 h-96 rounded-full absolute -bottom-48 -right-48 ${isDarkMode ? 'bg-indigo-900/20' : 'bg-indigo-100/30'
+          }`}></div>
       </div>
 
       {/* Floating decoration elements */}
@@ -273,22 +270,20 @@ const AdminProfile = () => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
         <div className="flex items-center">
           <Sparkles className={`h-8 w-8 mr-3 ${isDarkMode ? 'text-yellow-400' : 'text-purple-500'}`} />
-          <h1 className={`text-3xl font-bold ${
-            isDarkMode 
-              ? 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-orange-400' 
+          <h1 className={`text-3xl font-bold ${isDarkMode
+              ? 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-orange-400'
               : 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500'
-          } animate-gradient`}>
-            Admin Profile
+            } animate-gradient`}>
+            Team Admin Profile
           </h1>
         </div>
         {!isEditing ? (
           <button
             onClick={() => setIsEditing(true)}
-            className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${
-              isDarkMode 
-                ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-900 hover:from-yellow-600 hover:to-amber-700' 
+            className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${isDarkMode
+                ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-gray-900 hover:from-yellow-600 hover:to-amber-700'
                 : 'bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600'
-            }`}
+              }`}
           >
             <Edit className="h-5 w-5 mr-2" />
             Edit Profile
@@ -300,22 +295,20 @@ const AdminProfile = () => {
                 setIsEditing(false);
                 setPreviewImage(profile.profilePicture);
               }}
-              className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${
-                isDarkMode 
-                  ? 'bg-gray-700 text-white hover:bg-gray-600' 
+              className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${isDarkMode
+                  ? 'bg-gray-700 text-white hover:bg-gray-600'
                   : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-              }`}
+                }`}
             >
               <X className="h-5 w-5 mr-2" />
               Cancel
             </button>
             <button
               onClick={handleSubmit}
-              className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${
-                isDarkMode 
-                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700' 
+              className={`flex items-center px-5 py-2.5 rounded-full shadow-lg transition-all duration-200 transform hover:scale-105 ${isDarkMode
+                  ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700'
                   : 'bg-gradient-to-r from-green-500 to-teal-500 text-white hover:from-green-600 hover:to-teal-600'
-              }`}
+                }`}
             >
               <Save className="h-5 w-5 mr-2" />
               Save Changes
@@ -337,58 +330,54 @@ const AdminProfile = () => {
         </div>
       )}
 
-      <div className={`rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ${
-        isDarkMode 
-          ? 'bg-gradient-to-b from-gray-800/80 to-gray-900/80 border border-purple-900/50' 
+      <div className={`rounded-2xl shadow-xl overflow-hidden transition-all duration-300 ${isDarkMode
+          ? 'bg-gradient-to-b from-gray-800/80 to-gray-900/80 border border-purple-900/50'
           : 'bg-white/90 border border-purple-100 shadow-purple-100/20'
-      }`}>
-        {/* Header section with profile image */}
-        <div className={`p-8 ${
-          isDarkMode 
-            ? 'bg-gradient-to-r from-purple-900/30 to-indigo-900/30' 
-            : 'bg-gradient-to-r from-purple-50 to-pink-50'
-        } border-b ${
-          isDarkMode ? 'border-gray-700' : 'border-purple-100'
         }`}>
+        {/* Header section with profile image */}
+        <div className={`p-8 ${isDarkMode
+            ? 'bg-gradient-to-r from-purple-900/30 to-indigo-900/30'
+            : 'bg-gradient-to-r from-purple-50 to-pink-50'
+          } border-b ${isDarkMode ? 'border-gray-700' : 'border-purple-100'
+          }`}>
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="relative group">
               <div className={`h-36 w-36 rounded-full overflow-hidden 
-                ${isDarkMode 
-                  ? 'bg-gray-700 ring-4 ring-yellow-500/50' 
+                ${isDarkMode
+                  ? 'bg-gray-700 ring-4 ring-yellow-500/50'
                   : 'bg-purple-100 ring-4 ring-purple-200'
                 } shadow-xl transition-all duration-300 group-hover:shadow-2xl`}>
                 {previewImage ? (
-                  <img 
-                    src={previewImage} 
-                    alt="Profile" 
+                  <img
+                    src={previewImage}
+                    alt="Profile"
                     className="h-full w-full object-cover"
                   />
                 ) : (
                   <div className="h-full w-full flex items-center justify-center">
-                    <User className={`h-20 w-20 ${
-                      isDarkMode ? 'text-gray-500' : 'text-purple-300'
-                    }`} />
+                    <User className={`h-20 w-20 ${isDarkMode ? 'text-gray-500' : 'text-purple-300'
+                      }`} />
                   </div>
                 )}
               </div>
-              
+
               {/* Upload progress indicator */}
               {uploadProgress > 0 && (
                 <div className="absolute bottom-0 left-0 right-0 h-2 bg-gray-200 rounded-full overflow-hidden">
-                  <div 
+                  <div
                     className="h-full bg-green-500 transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
               )}
-              
+
               {isEditing && (
                 <>
                   <button
                     onClick={() => fileInputRef.current?.click()}
                     className={`absolute bottom-2 right-2 p-3 rounded-full 
-                      ${isDarkMode 
-                        ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400' 
+                      ${isDarkMode
+                        ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400'
                         : 'bg-purple-600 text-white hover:bg-purple-700'
                       } shadow-lg transition-all duration-200 transform hover:scale-110`}
                     title="Upload profile picture"
@@ -404,21 +393,19 @@ const AdminProfile = () => {
                   />
                 </>
               )}
-              
+
               {/* Decorative ring */}
-              <div className={`absolute -inset-1 rounded-full ${
-                isDarkMode 
-                  ? 'bg-gradient-to-r from-yellow-500/20 to-amber-500/20' 
+              <div className={`absolute -inset-1 rounded-full ${isDarkMode
+                  ? 'bg-gradient-to-r from-yellow-500/20 to-amber-500/20'
                   : 'bg-gradient-to-r from-purple-200/50 to-pink-200/50'
-              } -z-10 blur-sm animate-pulse-slow`}></div>
+                } -z-10 blur-sm animate-pulse-slow`}></div>
             </div>
-            
+
             <div className="flex flex-col text-center md:text-left">
-              <h2 className={`text-3xl font-bold mb-2 ${
-                isDarkMode 
-                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-400' 
+              <h2 className={`text-3xl font-bold mb-2 ${isDarkMode
+                  ? 'text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-yellow-400'
                   : 'text-transparent bg-clip-text bg-gradient-to-r from-purple-700 to-pink-600'
-              }`}>
+                }`}>
                 {isEditing ? (
                   <div className="flex flex-col sm:flex-row gap-3">
                     <input
@@ -427,13 +414,11 @@ const AdminProfile = () => {
                       value={profile.firstName}
                       onChange={handleChange}
                       placeholder="First Name"
-                      className={`px-4 py-2.5 border rounded-xl ${
-                        isDarkMode
+                      className={`px-4 py-2.5 border rounded-xl ${isDarkMode
                           ? 'bg-gray-700/80 border-gray-600 text-white placeholder-gray-400'
                           : 'bg-white border-purple-200 text-gray-900 placeholder-gray-400'
-                      } focus:outline-none focus:ring-2 ${
-                        isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
-                      } shadow-sm`}
+                        } focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
+                        } shadow-sm`}
                     />
                     <input
                       type="text"
@@ -441,27 +426,23 @@ const AdminProfile = () => {
                       value={profile.lastName}
                       onChange={handleChange}
                       placeholder="Last Name"
-                      className={`px-4 py-2.5 border rounded-xl ${
-                        isDarkMode
+                      className={`px-4 py-2.5 border rounded-xl ${isDarkMode
                           ? 'bg-gray-700/80 border-gray-600 text-white placeholder-gray-400'
                           : 'bg-white border-purple-200 text-gray-900 placeholder-gray-400'
-                      } focus:outline-none focus:ring-2 ${
-                        isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
-                      } shadow-sm`}
+                        } focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
+                        } shadow-sm`}
                     />
                   </div>
                 ) : (
                   `${profile.firstName} ${profile.lastName}`
                 )}
               </h2>
-              <div className={`flex items-center justify-center md:justify-start mt-1 ${
-                isDarkMode ? 'text-yellow-400' : 'text-purple-600'
-              }`}>
-                <span className={`px-4 py-1.5 text-sm rounded-full ${
-                  isDarkMode 
-                    ? 'bg-gray-800/80 text-yellow-400 border border-yellow-500/30' 
-                    : 'bg-purple-100 text-purple-700 font-medium'
+              <div className={`flex items-center justify-center md:justify-start mt-1 ${isDarkMode ? 'text-yellow-400' : 'text-purple-600'
                 }`}>
+                <span className={`px-4 py-1.5 text-sm rounded-full ${isDarkMode
+                    ? 'bg-gray-800/80 text-yellow-400 border border-yellow-500/30'
+                    : 'bg-purple-100 text-purple-700 font-medium'
+                  }`}>
                   {profile.role.charAt(0).toUpperCase() + profile.role.slice(1)}
                 </span>
               </div>
@@ -472,19 +453,16 @@ const AdminProfile = () => {
         {/* Profile information cards */}
         <div className="p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30' 
+            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${isDarkMode
+                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30'
                 : 'bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100/80'
-            }`}>
+              }`}>
               <div className="flex items-start">
-                <Mail className={`h-6 w-6 mt-1 ${
-                  isDarkMode ? 'text-yellow-400' : 'text-purple-500'
-                }`} />
+                <Mail className={`h-6 w-6 mt-1 ${isDarkMode ? 'text-yellow-400' : 'text-purple-500'
+                  }`} />
                 <div className="ml-3 flex-1">
-                  <p className={`text-sm font-medium ${
-                    isDarkMode ? 'text-gray-300' : 'text-gray-500'
-                  }`}>
+                  <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
                     Email
                   </p>
                   {isEditing ? (
@@ -493,18 +471,15 @@ const AdminProfile = () => {
                       name="email"
                       value={profile.email}
                       onChange={handleChange}
-                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${
-                        isDarkMode
+                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${isDarkMode
                           ? 'bg-gray-800/90 border-gray-700 text-white'
                           : 'bg-white border-purple-200 text-gray-900'
-                      } focus:outline-none focus:ring-2 ${
-                        isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
-                      } shadow-sm`}
+                        } focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
+                        } shadow-sm`}
                     />
                   ) : (
-                    <p className={`mt-1.5 text-lg ${
-                      isDarkMode ? 'text-white' : 'text-gray-900'
-                    } font-medium`}>
+                    <p className={`mt-1.5 text-lg ${isDarkMode ? 'text-white' : 'text-gray-900'
+                      } font-medium`}>
                       {profile.email}
                     </p>
                   )}
@@ -512,19 +487,16 @@ const AdminProfile = () => {
               </div>
             </div>
 
-            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30' 
+            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${isDarkMode
+                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30'
                 : 'bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100/80'
-            }`}>
+              }`}>
               <div className="flex items-start">
-                <Phone className={`h-6 w-6 mt-1 ${
-                  isDarkMode ? 'text-yellow-400' : 'text-purple-500'
-                }`} />
+                <Phone className={`h-6 w-6 mt-1 ${isDarkMode ? 'text-yellow-400' : 'text-purple-500'
+                  }`} />
                 <div className="ml-3 flex-1">
-                  <p className={`text-sm font-medium ${
-                    isDarkMode ? 'text-gray-300' : 'text-gray-500'
-                  }`}>
+                  <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
                     Phone Number
                   </p>
                   {isEditing ? (
@@ -533,18 +505,15 @@ const AdminProfile = () => {
                       name="phoneNumber"
                       value={profile.phoneNumber}
                       onChange={handleChange}
-                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${
-                        isDarkMode
+                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${isDarkMode
                           ? 'bg-gray-800/90 border-gray-700 text-white'
                           : 'bg-white border-purple-200 text-gray-900'
-                      } focus:outline-none focus:ring-2 ${
-                        isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
-                      } shadow-sm`}
+                        } focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
+                        } shadow-sm`}
                     />
                   ) : (
-                    <p className={`mt-1.5 text-lg ${
-                      isDarkMode ? 'text-white' : 'text-gray-900'
-                    } font-medium`}>
+                    <p className={`mt-1.5 text-lg ${isDarkMode ? 'text-white' : 'text-gray-900'
+                      } font-medium`}>
                       {profile.phoneNumber || 'Not specified'}
                     </p>
                   )}
@@ -552,19 +521,16 @@ const AdminProfile = () => {
               </div>
             </div>
 
-            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30' 
+            <div className={`p-5 rounded-xl shadow-sm transform transition-all duration-300 hover:shadow-md hover:-translate-y-1 ${isDarkMode
+                ? 'bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-800/30'
                 : 'bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100/80'
-            }`}>
+              }`}>
               <div className="flex items-start">
-                <MapPin className={`h-6 w-6 mt-1 ${
-                  isDarkMode ? 'text-yellow-400' : 'text-purple-500'
-                }`} />
+                <MapPin className={`h-6 w-6 mt-1 ${isDarkMode ? 'text-yellow-400' : 'text-purple-500'
+                  }`} />
                 <div className="ml-3 flex-1">
-                  <p className={`text-sm font-medium ${
-                    isDarkMode ? 'text-gray-300' : 'text-gray-500'
-                  }`}>
+                  <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-500'
+                    }`}>
                     Address
                   </p>
                   {isEditing ? (
@@ -573,37 +539,32 @@ const AdminProfile = () => {
                       name="address"
                       value={profile.address}
                       onChange={handleChange}
-                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${
-                        isDarkMode
+                      className={`w-full mt-1.5 px-4 py-2.5 border rounded-xl ${isDarkMode
                           ? 'bg-gray-800/90 border-gray-700 text-white'
                           : 'bg-white border-purple-200 text-gray-900'
-                      } focus:outline-none focus:ring-2 ${
-                        isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
-                      } shadow-sm`}
+                        } focus:outline-none focus:ring-2 ${isDarkMode ? 'focus:ring-yellow-500' : 'focus:ring-purple-400'
+                        } shadow-sm`}
                     />
                   ) : (
-                    <p className={`mt-1.5 text-lg ${
-                      isDarkMode ? 'text-white' : 'text-gray-900'
-                    } font-medium`}>
+                    <p className={`mt-1.5 text-lg ${isDarkMode ? 'text-white' : 'text-gray-900'
+                      } font-medium`}>
                       {profile.address || 'Not specified'}
                     </p>
                   )}
                 </div>
               </div>
             </div>
-            
+
             {/* Additional info or footer for the profile section */}
-            <div className={`p-5 rounded-xl shadow-sm ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-800/30' 
+            <div className={`p-5 rounded-xl shadow-sm ${isDarkMode
+                ? 'bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-800/30'
                 : 'bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-100/80'
-            }`}>
+              }`}>
               <div className="text-center">
-                <h3 className={`font-medium text-lg mb-2 ${
-                  isDarkMode ? 'text-yellow-400' : 'text-amber-700'
-                }`}>Daystar Daycare</h3>
+                <h3 className={`font-medium text-lg mb-2 ${isDarkMode ? 'text-yellow-400' : 'text-amber-700'
+                  }`}>BAKO Analytics</h3>
                 <p className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}>
-                  Administrator portal access
+                  Organization management portal
                 </p>
                 <div className="mt-3 text-xs text-center">
                   <span className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>

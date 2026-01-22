@@ -24,56 +24,44 @@ const AdminSidebar = ({ isOpen }) => {
   const { isDarkMode } = useTheme();
 
   const menuItems = [
-    { path: '/admin', icon: Home, label: 'Dashboard', color: 'from-blue-500 to-indigo-600' },
-    { path: '/admin/users', icon: Users, label: 'Staff Management', color: 'from-green-500 to-teal-600' },
-    { path: '/admin/babysitters', icon: UserPlus, label: 'Babysitter Management', color: 'from-purple-500 to-violet-600' },
-    { path: '/admin/children', icon: Baby, label: 'Children Management', color: 'from-orange-400 to-pink-500' },
-    { path: '/admin/schedule', icon: Calendar, label: 'Schedule', color: 'from-yellow-400 to-amber-600' },
-    { path: '/admin/child-payment', icon: DollarSign, label: 'Child Payments', color: 'from-green-500 to-emerald-600' },
-    { path: '/admin/incidents', icon: Shield, label: 'Incident Management', color: 'from-red-500 to-orange-600' },
-    { path: '/admin/reports', icon: BarChart2, label: 'Reports & Analytics', color: 'from-gray-500 to-gray-600' },
-    { path: '/admin/data-management', icon: Database, label: 'Data Management', color: 'from-blue-500 to-indigo-600' },
-    { path: '/admin/settings', icon: Settings, label: 'Settings', color: 'from-purple-500 to-indigo-700' },
-    { path: '/admin/notifications', icon: Bell, label: 'Notifications & Alerts', color: 'from-rose-500 to-red-600' },
-    { path: '/admin/attendance', icon: ClipboardCheck, label: 'Attendance', color: 'from-emerald-500 to-green-600' },
-    { path: '/admin/security', icon: Shield, label: 'Security', color: 'from-indigo-500 to-purple-600' }
+    { path: '/team', icon: Home, label: 'Dashboard', color: 'from-blue-500 to-indigo-600' },
+    { path: '/team/management', icon: Users, label: 'Team Management', color: 'from-green-500 to-teal-600' },
+    { path: '/team/analysis', icon: Activity, label: 'Match Analysis', color: 'from-purple-500 to-violet-600' },
+    { path: '/team/stats', icon: BarChart2, label: 'Team Statistics', color: 'from-orange-400 to-pink-500' },
+    { path: '/team/settings', icon: Settings, label: 'Settings', color: 'from-purple-500 to-indigo-700' },
+    { path: '/team/notifications', icon: Bell, label: 'Notifications', color: 'from-rose-500 to-red-600' }
   ];
 
   // Count unread messages in communications
   const hasCommunicationsIndicator = false; // Will be implemented with real data
 
   return (
-    <aside className={`fixed top-0 left-0 z-40 h-screen transition-transform duration-300 ${
-      isOpen ? 'translate-x-0' : '-translate-x-full'
-    } w-64 ${
-      isDarkMode 
-        ? 'bg-gradient-to-b from-gray-900 to-gray-800 border-gray-700' 
+    <aside className={`fixed top-0 left-0 z-40 h-screen transition-transform duration-300 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+      } w-64 ${isDarkMode
+        ? 'bg-gradient-to-b from-gray-900 to-gray-800 border-gray-700'
         : 'bg-gradient-to-b from-white to-gray-50 border-gray-200'
-    } border-r custom-admin-sidebar-scrollbar`}>
+      } border-r custom-admin-sidebar-scrollbar`}>
       <div className="h-full px-3 py-4 overflow-y-auto">
         <div className="mb-8 px-3 flex items-center">
-          <div className={`h-10 w-10 rounded-full bg-gradient-to-tr ${
-            isDarkMode ? 'from-indigo-600 to-purple-600' : 'from-blue-500 to-indigo-600'
-          } flex items-center justify-center mr-3`}>
+          <div className={`h-10 w-10 rounded-full bg-gradient-to-tr ${isDarkMode ? 'from-indigo-600 to-purple-600' : 'from-blue-500 to-indigo-600'
+            } flex items-center justify-center mr-3`}>
             <Activity className="h-6 w-6 text-white" />
           </div>
-          <h1 className={`text-xl font-bold ${
-            isDarkMode 
-              ? 'text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400' 
-              : 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600'
-          }`}>
-            Daystar Daycare
+          <h1 className={`text-xl font-bold ${isDarkMode
+            ? 'text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400'
+            : 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600'
+            }`}>
+            BAKO Analytics
           </h1>
         </div>
-        
+
         <div className="my-4 px-3">
-          <p className={`text-xs uppercase font-semibold tracking-wider ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-500'
-          }`}>
+          <p className={`text-xs uppercase font-semibold tracking-wider ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+            }`}>
             Main Navigation
           </p>
         </div>
-        
+
         <ul className="space-y-2 px-2">
           {menuItems.map((item) => (
             <li key={item.path}>
@@ -87,10 +75,10 @@ const AdminSidebar = ({ isOpen }) => {
                   const inactiveClasses = isDarkMode
                     ? 'text-gray-300 hover:bg-gray-700 hover:text-white'
                     : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900';
-                  
+
                   return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
                 }}
-                end={item.path === '/admin'}
+                end={item.path === '/team'}
               >
                 {({ isActive }) => (
                   <>
@@ -107,10 +95,9 @@ const AdminSidebar = ({ isOpen }) => {
             </li>
           ))}
         </ul>
-        
-        <div className={`mt-10 mx-3 p-4 rounded-xl ${
-          isDarkMode ? 'bg-gray-800' : 'bg-white'
-        } shadow-sm`}>
+
+        <div className={`mt-10 mx-3 p-4 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+          } shadow-sm`}>
           <div className="flex flex-col items-center text-center">
             <div className={`h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center mb-2`}>
               <Shield className="h-5 w-5 text-white" />

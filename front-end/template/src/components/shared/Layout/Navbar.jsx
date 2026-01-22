@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { useTheme } from '../../../context/ThemeContext';
-import { Bell, Calendar, User, Home, FileText, Baby, Sun, Moon, ChevronDown, LogOut, ClipboardCheck, AlertCircle } from 'lucide-react';
+import { Bell, Calendar, User, Home, FileText, Baby, Sun, Moon, ChevronDown, LogOut, ClipboardCheck, AlertCircle, Activity } from 'lucide-react';
 
 const Navbar = ({ role }) => {
   const { user, logout } = useAuth();
@@ -28,13 +28,11 @@ const Navbar = ({ role }) => {
         ];
       case 'babysitter':
         return [
-          { to: '/babysitter', icon: <Home className="h-5 w-5" />, label: 'Home' },
-          { to: '/babysitter/profile', icon: <User className="h-5 w-5" />, label: 'Profile' },
-          { to: '/babysitter/schedule', icon: <Calendar className="h-5 w-5" />, label: 'Schedule' },
-          { to: '/babysitter/attendance', icon: <ClipboardCheck className="h-5 w-5" />, label: 'Attendance' },
-          { to: '/babysitter/incidents', icon: <AlertCircle className="h-5 w-5" />, label: 'Incidents' },
-          { to: '/babysitter/reports', icon: <FileText className="h-5 w-5" />, label: 'Reports' },
-          { to: '/babysitter/notifications', icon: <Bell className="h-5 w-5" />, label: 'Notifications' }
+          { to: '/player', icon: <Home className="h-5 w-5" />, label: 'Dashboard' },
+          { to: '/player/training', icon: <Activity className="h-5 w-5" />, label: 'Training' },
+          { to: '/player/skills', icon: <BarChart2 className="h-5 w-5" />, label: 'Skill Analytics' },
+          { to: '/player/profile', icon: <User className="h-5 w-5" />, label: 'My Progress' },
+          { to: '/player/notifications', icon: <Bell className="h-5 w-5" />, label: 'Notifications' }
         ];
       default:
         return [];
@@ -44,26 +42,24 @@ const Navbar = ({ role }) => {
   const navLinks = getNavLinks();
 
   return (
-    <nav className={`sticky top-0 z-50 transition-colors duration-300 ${
-      isDarkMode 
-        ? 'bg-gradient-to-r from-gray-900 via-indigo-950 to-purple-900 shadow-xl' 
-        : 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg'
-    }`}>
+    <nav className={`sticky top-0 z-50 transition-colors duration-300 ${isDarkMode
+      ? 'bg-gradient-to-r from-gray-900 via-indigo-950 to-purple-900 shadow-xl'
+      : 'bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg'
+      }`}>
       {/* African pattern decoration - top border */}
       <div className="h-1 w-full bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"></div>
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between h-20">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2 group">
-              <div className={`p-2 rounded-full transition-all duration-300 transform group-hover:scale-110 ${
-                isDarkMode ? 'bg-gray-800' : 'bg-white'
-              }`}>
-                <Baby className={`h-8 w-8 ${isDarkMode ? 'text-yellow-400' : 'text-indigo-600'}`} />
+              <div className={`p-2 rounded-full transition-all duration-300 transform group-hover:scale-110 ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+                }`}>
+                <Activity className={`h-8 w-8 ${isDarkMode ? 'text-yellow-400' : 'text-indigo-600'}`} />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-bold text-white">Daystar</span>
-                <span className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-blue-100'}`}>Daycare Center</span>
+                <span className="text-2xl font-bold text-white">BAKO</span>
+                <span className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-blue-100'}`}>Basketball Analytics</span>
               </div>
             </Link>
           </div>
@@ -74,16 +70,15 @@ const Navbar = ({ role }) => {
             <div className="flex items-center space-x-4 mr-4">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.to;
-                
+
                 return (
                   <Link
                     key={link.to}
                     to={link.to}
-                    className={`flex items-center px-3 py-2 rounded-lg transition-all duration-200 text-white ${
-                      isActive 
-                        ? isDarkMode ? 'bg-gray-800 text-yellow-300' : 'bg-white bg-opacity-20 font-semibold' 
-                        : 'hover:bg-white hover:bg-opacity-20'
-                    }`}
+                    className={`flex items-center px-3 py-2 rounded-lg transition-all duration-200 text-white ${isActive
+                      ? isDarkMode ? 'bg-gray-800 text-yellow-300' : 'bg-white bg-opacity-20 font-semibold'
+                      : 'hover:bg-white hover:bg-opacity-20'
+                      }`}
                   >
                     {link.icon}
                     <span className="ml-2">{link.label}</span>
@@ -95,11 +90,10 @@ const Navbar = ({ role }) => {
             <div className="flex items-center space-x-5">
               <button
                 onClick={toggleTheme}
-                className={`p-2 rounded-full transition-all duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' 
-                    : 'bg-white bg-opacity-20 text-white hover:bg-opacity-30'
-                }`}
+                className={`p-2 rounded-full transition-all duration-200 ${isDarkMode
+                  ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700'
+                  : 'bg-white bg-opacity-20 text-white hover:bg-opacity-30'
+                  }`}
                 aria-label="Toggle theme"
               >
                 {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
@@ -107,25 +101,22 @@ const Navbar = ({ role }) => {
 
               {user ? (
                 <div className="relative">
-                  <button 
+                  <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${
-                      isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-white hover:bg-opacity-20'
-                    }`}
+                    className={`flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-white hover:bg-opacity-20'
+                      }`}
                   >
-                    <div className={`w-8 h-8 rounded-full overflow-hidden border-2 ${
-                      isDarkMode ? 'border-yellow-400' : 'border-white'
-                    }`}>
+                    <div className={`w-8 h-8 rounded-full overflow-hidden border-2 ${isDarkMode ? 'border-yellow-400' : 'border-white'
+                      }`}>
                       {user.profileImage ? (
-                        <img 
-                          src={user.profileImage} 
-                          alt={user.name || `${user.firstName} ${user.lastName}`} 
+                        <img
+                          src={user.profileImage}
+                          alt={user.name || `${user.firstName} ${user.lastName}`}
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className={`w-full h-full flex items-center justify-center ${
-                          isDarkMode ? 'bg-gray-800 text-yellow-400' : 'bg-indigo-700 text-white'
-                        }`}>
+                        <div className={`w-full h-full flex items-center justify-center ${isDarkMode ? 'bg-gray-800 text-yellow-400' : 'bg-indigo-700 text-white'
+                          }`}>
                           <span className="text-lg font-bold">
                             {user.firstName ? user.firstName.charAt(0) : (user.name ? user.name.charAt(0) : 'U')}
                           </span>
@@ -135,21 +126,18 @@ const Navbar = ({ role }) => {
                     <span className="text-white font-medium">
                       {user.name || (user.firstName && `${user.firstName} ${user.lastName}`)}
                     </span>
-                    <ChevronDown className={`h-5 w-5 text-white transition-transform duration-200 ${
-                      isDropdownOpen ? 'transform rotate-180' : ''
-                    }`} />
+                    <ChevronDown className={`h-5 w-5 text-white transition-transform duration-200 ${isDropdownOpen ? 'transform rotate-180' : ''
+                      }`} />
                   </button>
-                  
+
                   {/* User dropdown */}
                   {isDropdownOpen && (
-                    <div className={`absolute right-0 mt-2 w-48 rounded-xl shadow-xl z-20 py-2 ${
-                      isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
-                    }`}>
+                    <div className={`absolute right-0 mt-2 w-48 rounded-xl shadow-xl z-20 py-2 ${isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+                      }`}>
                       <Link
                         to={`/${role}/profile`}
-                        className={`flex items-center px-4 py-2 text-sm hover:text-indigo-600 ${
-                          isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-50'
-                        }`}
+                        className={`flex items-center px-4 py-2 text-sm hover:text-indigo-600 ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-50'
+                          }`}
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         <User className="h-4 w-4 mr-2" />
@@ -157,9 +145,8 @@ const Navbar = ({ role }) => {
                       </Link>
                       <Link
                         to={`/${role}/notifications`}
-                        className={`flex items-center px-4 py-2 text-sm hover:text-indigo-600 ${
-                          isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-50'
-                        }`}
+                        className={`flex items-center px-4 py-2 text-sm hover:text-indigo-600 ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-indigo-50'
+                          }`}
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         <Bell className="h-4 w-4 mr-2" />
@@ -171,9 +158,8 @@ const Navbar = ({ role }) => {
                           handleLogout();
                           setIsDropdownOpen(false);
                         }}
-                        className={`w-full flex items-center px-4 py-2 text-sm text-left text-red-600 ${
-                          isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-red-50'
-                        }`}
+                        className={`w-full flex items-center px-4 py-2 text-sm text-left text-red-600 ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-red-50'
+                          }`}
                       >
                         <LogOut className="h-4 w-4 mr-2" />
                         <span>Log out</span>
@@ -184,14 +170,13 @@ const Navbar = ({ role }) => {
               ) : (
                 <Link
                   to="/login"
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center ${
-                    isDarkMode 
-                      ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400' 
-                      : 'bg-white text-indigo-600 hover:bg-blue-50'
-                  }`}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center ${isDarkMode
+                    ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400'
+                    : 'bg-white text-indigo-600 hover:bg-blue-50'
+                    }`}
                 >
                   <User className="h-4 w-4 mr-2" />
-                  Staff Login
+                  Login
                 </Link>
               )}
             </div>
@@ -201,21 +186,19 @@ const Navbar = ({ role }) => {
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleTheme}
-              className={`mr-3 p-2 rounded-full ${
-                isDarkMode 
-                  ? 'bg-gray-800 text-yellow-400' 
-                  : 'bg-white bg-opacity-20 text-white'
-              }`}
+              className={`mr-3 p-2 rounded-full ${isDarkMode
+                ? 'bg-gray-800 text-yellow-400'
+                : 'bg-white bg-opacity-20 text-white'
+                }`}
               aria-label="Toggle theme"
             >
               {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
-            
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`p-2 rounded-lg text-white ${
-                isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-white hover:bg-opacity-20'
-              }`}
+              className={`p-2 rounded-lg text-white ${isDarkMode ? 'hover:bg-gray-800' : 'hover:bg-white hover:bg-opacity-20'
+                }`}
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isMenuOpen ? (
@@ -230,30 +213,25 @@ const Navbar = ({ role }) => {
       </div>
 
       {/* Mobile menu */}
-      <div className={`md:hidden transition-all duration-300 ${
-        isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
-      } overflow-hidden`}>
-        <div className={`px-4 pt-2 pb-3 space-y-1 ${
-          isDarkMode ? 'bg-gray-900' : 'bg-indigo-700'
-        }`}>
+      <div className={`md:hidden transition-all duration-300 ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+        } overflow-hidden`}>
+        <div className={`px-4 pt-2 pb-3 space-y-1 ${isDarkMode ? 'bg-gray-900' : 'bg-indigo-700'
+          }`}>
           {/* User info on mobile */}
           {user && (
-            <div className={`flex items-center px-3 py-3 mb-3 rounded-xl ${
-              isDarkMode ? 'bg-gray-800' : 'bg-indigo-800'
-            }`}>
-              <div className={`w-10 h-10 rounded-full overflow-hidden border-2 ${
-                isDarkMode ? 'border-yellow-400' : 'border-white'
+            <div className={`flex items-center px-3 py-3 mb-3 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-indigo-800'
               }`}>
+              <div className={`w-10 h-10 rounded-full overflow-hidden border-2 ${isDarkMode ? 'border-yellow-400' : 'border-white'
+                }`}>
                 {user.profileImage ? (
-                  <img 
-                    src={user.profileImage} 
-                    alt={user.name || `${user.firstName} ${user.lastName}`} 
+                  <img
+                    src={user.profileImage}
+                    alt={user.name || `${user.firstName} ${user.lastName}`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <div className={`w-full h-full flex items-center justify-center ${
-                    isDarkMode ? 'bg-gray-700 text-yellow-400' : 'bg-indigo-600 text-white'
-                  }`}>
+                  <div className={`w-full h-full flex items-center justify-center ${isDarkMode ? 'bg-gray-700 text-yellow-400' : 'bg-indigo-600 text-white'
+                    }`}>
                     <span className="text-lg font-bold">
                       {user.firstName ? user.firstName.charAt(0) : (user.name ? user.name.charAt(0) : 'U')}
                     </span>
@@ -270,22 +248,21 @@ const Navbar = ({ role }) => {
               </div>
             </div>
           )}
-          
+
           {/* Role-specific navigation links */}
           {navLinks.map((link) => {
             const isActive = location.pathname === link.to;
-            
+
             return (
               <Link
                 key={link.to}
                 to={link.to}
-                className={`flex items-center px-3 py-2 rounded-lg transition-all duration-200 ${
-                  isActive 
-                    ? isDarkMode 
-                      ? 'bg-gray-800 text-yellow-400' 
-                      : 'bg-white bg-opacity-20 text-white font-semibold' 
-                    : 'text-white hover:bg-white hover:bg-opacity-10'
-                }`}
+                className={`flex items-center px-3 py-2 rounded-lg transition-all duration-200 ${isActive
+                  ? isDarkMode
+                    ? 'bg-gray-800 text-yellow-400'
+                    : 'bg-white bg-opacity-20 text-white font-semibold'
+                  : 'text-white hover:bg-white hover:bg-opacity-10'
+                  }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.icon}
@@ -297,29 +274,27 @@ const Navbar = ({ role }) => {
           {!user && (
             <Link
               to="/login"
-              className={`flex items-center justify-center px-3 py-3 rounded-lg font-medium ${
-                isDarkMode 
-                  ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400' 
-                  : 'bg-white text-indigo-700 hover:bg-blue-50'
-              }`}
+              className={`flex items-center justify-center px-3 py-3 rounded-lg font-medium ${isDarkMode
+                ? 'bg-yellow-500 text-gray-900 hover:bg-yellow-400'
+                : 'bg-white text-indigo-700 hover:bg-blue-50'
+                }`}
               onClick={() => setIsMenuOpen(false)}
             >
               <User className="h-5 w-5 mr-2" />
-              <span>Staff Login</span>
+              <span>Login</span>
             </Link>
           )}
-          
+
           {user && (
             <button
               onClick={() => {
                 handleLogout();
                 setIsMenuOpen(false);
               }}
-              className={`w-full flex items-center justify-center px-3 py-3 rounded-lg font-medium ${
-                isDarkMode 
-                  ? 'bg-red-500 text-white hover:bg-red-600' 
-                  : 'bg-white text-red-600 hover:bg-red-50'
-              }`}
+              className={`w-full flex items-center justify-center px-3 py-3 rounded-lg font-medium ${isDarkMode
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-white text-red-600 hover:bg-red-50'
+                }`}
             >
               <LogOut className="h-5 w-5 mr-2" />
               <span>Logout</span>

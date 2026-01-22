@@ -18,10 +18,10 @@ const Login = () => {
       // Redirect based on user role
       switch (user.role) {
         case 'admin':
-          navigate('/admin');
+          navigate('/team');
           break;
         case 'babysitter':
-          navigate('/babysitter');
+          navigate('/player');
           break;
         default:
           navigate('/');
@@ -43,10 +43,10 @@ const Login = () => {
         const userRole = result.user?.role || 'user';
         switch (userRole) {
           case 'admin':
-            navigate('/admin');
+            navigate('/team');
             break;
           case 'babysitter':
-            navigate('/babysitter');
+            navigate('/player');
             break;
           default:
             navigate('/');
@@ -65,32 +65,28 @@ const Login = () => {
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${
-      isDarkMode 
-        ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white' 
+    <div className={`min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${isDarkMode
+        ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white'
         : 'bg-gradient-to-b from-blue-100 to-purple-100 text-gray-900'
-    }`}>
+      }`}>
       <div className="max-w-md w-full space-y-8">
-        <div className={`relative p-8 rounded-3xl shadow-xl overflow-hidden ${
-          isDarkMode ? 'bg-gray-800' : 'bg-white'
-        }`}>
+        <div className={`relative p-8 rounded-3xl shadow-xl overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+          }`}>
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-yellow-300 rounded-full opacity-30"></div>
           <div className="absolute bottom-0 left-0 -mb-4 -ml-4 w-24 h-24 bg-pink-400 rounded-full opacity-30"></div>
-          
+
           <div className="text-center relative z-10">
             <div className="mx-auto h-24 w-24 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-xl mb-5 flex items-center justify-center shadow-lg">
               <Baby className="h-14 w-14 text-white" />
             </div>
-            
-            <h2 className={`text-3xl font-extrabold mb-2 ${
-              isDarkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              Welcome to Daystar!
+
+            <h2 className={`text-3xl font-extrabold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'
+              }`}>
+              Welcome to BAKO!
             </h2>
-            <p className={`mb-6 ${
-              isDarkMode ? 'text-gray-300' : 'text-gray-600'
-            }`}>
+            <p className={`mb-6 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'
+              }`}>
               Sign in to nurture bright futures together
             </p>
           </div>
@@ -105,9 +101,8 @@ const Login = () => {
 
             <div className="rounded-md -space-y-px">
               <div className="mb-5">
-                <label htmlFor="email" className={`block text-sm font-medium mb-1 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}>
+                <label htmlFor="email" className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
                   Email address
                 </label>
                 <div className="relative">
@@ -124,20 +119,18 @@ const Login = () => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 rounded-xl shadow-sm focus:outline-none ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500' 
+                    className={`block w-full pl-10 pr-3 py-3 rounded-xl shadow-sm focus:outline-none ${isDarkMode
+                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500'
                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500'
-                    }`}
+                      }`}
                     placeholder="Enter your email"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="password" className={`block text-sm font-medium mb-1 ${
-                  isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}>
+                <label htmlFor="password" className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                  }`}>
                   Password
                 </label>
                 <div className="relative">
@@ -154,11 +147,10 @@ const Login = () => {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`block w-full pl-10 pr-3 py-3 rounded-xl shadow-sm focus:outline-none ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500' 
+                    className={`block w-full pl-10 pr-3 py-3 rounded-xl shadow-sm focus:outline-none ${isDarkMode
+                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500'
                         : 'bg-white border-gray-300 text-gray-900 placeholder-gray-400 focus:ring-indigo-500 focus:border-indigo-500'
-                    }`}
+                      }`}
                     placeholder="Enter your password"
                   />
                 </div>
@@ -185,15 +177,14 @@ const Login = () => {
               </button>
             </div>
           </form>
-          
+
           <div className="mt-8 text-center relative z-10">
-            <p className={`text-sm ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
               For admin account access, please contact the system administrator
             </p>
           </div>
-          
+
           {/* Decorative shapes */}
           <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2">
             <div className="w-8 h-8 bg-green-300 rounded-full opacity-30"></div>

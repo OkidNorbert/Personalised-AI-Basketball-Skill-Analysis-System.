@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import ChildRegistration from '../admin/ChildRegistration';
 
-const ChildManagement = () => {
+const TeamManagement = () => {
   const navigate = useNavigate();
   const [children, setChildren] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -75,7 +75,7 @@ const ChildManagement = () => {
           other: 0
         }
       };
-      
+
       children.forEach(child => {
         // Calculate age stats
         let age = 0;
@@ -88,26 +88,26 @@ const ChildManagement = () => {
             age--;
           }
         }
-        
+
         if (age < 1) stats.byAge.infant++;
         else if (age < 2) stats.byAge.toddler++;
         else if (age >= 5 && age < 7) stats.byAge.kindergarten++;
         else stats.byAge.preschool++;
-        
+
         // Calculate gender stats
         const gender = child.gender || 'other';
         stats.byGender[gender]++;
       });
-      
+
       setChildStats(stats);
     }
   }, [children]);
 
   const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError('');
-      
+    try {
+      setLoading(true);
+      setError('');
+
       // Fetch parents first
       try {
         const parentsResponse = await api.get('/admin/users?role=parent');
@@ -120,11 +120,11 @@ const ChildManagement = () => {
           { id: '102', firstName: 'Sarah', lastName: 'Williams', email: 'sarah@example.com' }
         ]);
       }
-      
+
       // Then fetch children
       try {
         const childrenResponse = await api.get('/admin/children');
-        
+
         // Process children data to ensure parent info is available
         const processedChildren = (childrenResponse.data || []).map(child => {
           // If parent info is missing, try to find the parent from the parents list
@@ -143,12 +143,12 @@ const ChildManagement = () => {
           }
           return child;
         });
-        
+
         setChildren(processedChildren);
       } catch (error) {
         console.error('Error fetching children:', error);
         setError('Failed to fetch children data. Please try again later.');
-        
+
         // Mock data for development
         setChildren([
           {
@@ -185,7 +185,7 @@ const ChildManagement = () => {
           }
         ]);
       }
-      
+
       setLoading(false);
     } catch (error) {
       console.error('Error in fetchData:', error);
@@ -195,10 +195,10 @@ const ChildManagement = () => {
 
   const filteredChildren = children.filter(child => {
     if (!child) return false;
-    
+
     const fullName = `${child.firstName || ''} ${child.lastName || ''}`.toLowerCase();
     const searchTermLower = searchTerm.toLowerCase();
-    
+
     // Calculate age for age filtering
     let age = 0;
     if (child.dateOfBirth) {
@@ -210,22 +210,22 @@ const ChildManagement = () => {
         age--;
       }
     }
-    
+
     // Map age to filter categories
     let ageGroup = 'preschool'; // default
     if (age < 1) ageGroup = 'infant';
     else if (age < 2) ageGroup = 'toddler';
     else if (age >= 5 && age < 7) ageGroup = 'kindergarten';
-    
+
     const matchesSearch = fullName.includes(searchTermLower);
     const matchesAge = filterAge === 'all' || filterAge === ageGroup;
-    
+
     return matchesSearch && matchesAge;
   });
 
   const calculateAge = (dateOfBirth) => {
     if (!dateOfBirth) return 'N/A';
-    
+
     const birthDate = new Date(dateOfBirth);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -233,12 +233,12 @@ const ChildManagement = () => {
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    
+
     return age < 1 ? 'Under 1 yr' : `${age} yrs`;
   };
 
   const formatDuration = (duration) => {
-    switch(duration) {
+    switch (duration) {
       case 'half-day-morning':
         return 'Half-day (Morning)';
       case 'half-day-afternoon':
@@ -254,14 +254,14 @@ const ChildManagement = () => {
     if (child.parent) {
       return `${child.parent.firstName || ''} ${child.parent.lastName || ''}`;
     }
-    
+
     if (child.parentId) {
       const matchedParent = parents.find(p => p.id === child.parentId);
       if (matchedParent) {
         return `${matchedParent.firstName || ''} ${matchedParent.lastName || ''}`;
       }
     }
-    
+
     return 'N/A';
   };
 
@@ -308,31 +308,31 @@ const ChildManagement = () => {
   const handleUpdateChild = async (e) => {
     e.preventDefault();
     if (!editingChild) return;
-    
+
     try {
       setUpdateLoading(true);
       setUpdateError('');
       setUpdateSuccess('');
-      
+
       // Call API to update child
       const response = await api.put(`/admin/children/${editingChild.id}`, formData);
-      
+
       // Update children array with updated child
-      setChildren(prevChildren => 
-        prevChildren.map(child => 
+      setChildren(prevChildren =>
+        prevChildren.map(child =>
           child.id === editingChild.id ? { ...child, ...response.data } : child
         )
       );
-      
+
       setUpdateSuccess('Child information updated successfully!');
       setUpdateLoading(false);
-      
+
       // Wait a moment before switching back to view mode
       setTimeout(() => {
         setIsEditMode(false);
         setEditingChild(response.data);
       }, 1500);
-      
+
     } catch (error) {
       console.error('Error updating child:', error);
       setUpdateError(error.response?.data?.message || 'Failed to update child. Please try again.');
@@ -359,16 +359,16 @@ const ChildManagement = () => {
 
   const confirmDeleteChild = async () => {
     if (!deletingChild) return;
-    
+
     try {
       setDeleteLoading(true);
       setDeleteError('');
-      
+
       await api.delete(`/admin/children/${deletingChild.id}`);
-      
+
       // Update local state to remove the deleted child
       setChildren(prevChildren => prevChildren.filter(child => child.id !== deletingChild.id));
-      
+
       // Close the modal
       setShowDeleteModal(false);
       setDeletingChild(null);
@@ -382,11 +382,10 @@ const ChildManagement = () => {
 
   if (loading) {
     return (
-      <div className={`flex items-center justify-center min-h-screen ${
-        isDarkMode 
-          ? 'bg-gradient-to-b from-gray-900 to-indigo-950' 
-          : 'bg-gradient-to-b from-blue-50 to-indigo-100'
-      }`}>
+      <div className={`flex items-center justify-center min-h-screen ${isDarkMode
+        ? 'bg-gradient-to-b from-gray-900 to-indigo-950'
+        : 'bg-gradient-to-b from-blue-50 to-indigo-100'
+        }`}>
         <div className="flex flex-col items-center justify-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-primary-500"></div>
           <p className={`mt-4 text-lg ${isDarkMode ? 'text-white' : 'text-indigo-700'}`}>Loading children data...</p>
@@ -397,19 +396,17 @@ const ChildManagement = () => {
 
   if (error && children.length === 0) {
     return (
-      <div className={`flex flex-col items-center justify-center min-h-screen ${
-        isDarkMode 
-          ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white' 
-          : 'bg-gradient-to-b from-blue-50 to-indigo-100 text-gray-900'
-      }`}>
+      <div className={`flex flex-col items-center justify-center min-h-screen ${isDarkMode
+        ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white'
+        : 'bg-gradient-to-b from-blue-50 to-indigo-100 text-gray-900'
+        }`}>
         <div className="text-red-500 text-xl mb-4">{error}</div>
-        <button 
+        <button
           onClick={() => fetchData()}
-          className={`px-6 py-3 rounded-full shadow-lg transform transition-all duration-200 hover:scale-105 ${
-            isDarkMode 
-              ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700' 
-              : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700'
-          }`}
+          className={`px-6 py-3 rounded-full shadow-lg transform transition-all duration-200 hover:scale-105 ${isDarkMode
+            ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700'
+            : 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white hover:from-blue-600 hover:to-indigo-700'
+            }`}
         >
           Try Again
         </button>
@@ -418,64 +415,58 @@ const ChildManagement = () => {
   }
 
   return (
-    <div className={`min-h-screen ${
-      isDarkMode 
-        ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white' 
-        : 'bg-gradient-to-b from-blue-50 to-indigo-100 text-gray-900'
-    }`}>
+    <div className={`min-h-screen ${isDarkMode
+      ? 'bg-gradient-to-b from-gray-900 to-indigo-950 text-white'
+      : 'bg-gradient-to-b from-blue-50 to-indigo-100 text-gray-900'
+      }`}>
       <div className="max-w-7xl mx-auto p-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className={`text-2xl font-bold ${
-              isDarkMode 
-                ? 'text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400' 
-                : 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600'
-            }`}>Children Management</h1>
+            <h1 className={`text-2xl font-bold ${isDarkMode
+              ? 'text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400'
+              : 'text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600'
+              }`}>Team Management</h1>
             <p className={`mt-1 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Add and manage children's profiles and information
+              Add and manage your team roster and player information
             </p>
           </div>
           <div className="mt-4 md:mt-0 flex space-x-2">
             <button
               onClick={handleAddChildClick}
-              className={`flex items-center px-4 py-2 rounded-lg ${
-                isDarkMode 
-                  ? 'bg-blue-600 hover:bg-blue-700' 
-                  : 'bg-blue-500 hover:bg-blue-600'
-              } text-white transition-colors`}
+              className={`flex items-center px-4 py-2 rounded-lg ${isDarkMode
+                ? 'bg-blue-600 hover:bg-blue-700'
+                : 'bg-blue-500 hover:bg-blue-600'
+                } text-white transition-colors`}
             >
-              <Baby className="mr-2 h-5 w-5" />
-              Register Child & Guardian
+              <Users className="mr-2 h-5 w-5" />
+              Add New Player
             </button>
           </div>
         </div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-blue-900 to-indigo-900 shadow-lg' 
-              : 'bg-gradient-to-br from-blue-50 to-indigo-100 shadow-md'
-          }`}>
+          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${isDarkMode
+            ? 'bg-gradient-to-br from-blue-900 to-indigo-900 shadow-lg'
+            : 'bg-gradient-to-br from-blue-50 to-indigo-100 shadow-md'
+            }`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className={`text-sm ${isDarkMode ? 'text-blue-300' : 'text-blue-700'}`}>Total Children</p>
+                <p className={`text-sm ${isDarkMode ? 'text-blue-300' : 'text-blue-700'}`}>Total Players</p>
                 <p className={`text-3xl font-bold mt-1 ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>
                   {childStats.total}
                 </p>
               </div>
-              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-                isDarkMode ? 'bg-blue-800' : 'bg-blue-200'
-              }`}>
+              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-blue-800' : 'bg-blue-200'
+                }`}>
                 <Users className={`h-6 w-6 ${isDarkMode ? 'text-blue-300' : 'text-blue-600'}`} />
               </div>
             </div>
           </div>
-          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-pink-900 to-rose-900 shadow-lg' 
-              : 'bg-gradient-to-br from-pink-50 to-rose-100 shadow-md'
-          }`}>
+          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${isDarkMode
+            ? 'bg-gradient-to-br from-pink-900 to-rose-900 shadow-lg'
+            : 'bg-gradient-to-br from-pink-50 to-rose-100 shadow-md'
+            }`}>
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${isDarkMode ? 'text-pink-300' : 'text-pink-700'}`}>Gender Distribution</p>
@@ -487,18 +478,16 @@ const ChildManagement = () => {
                   <span className="text-sm"> girls</span>
                 </div>
               </div>
-              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-                isDarkMode ? 'bg-pink-800' : 'bg-pink-200'
-              }`}>
+              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-pink-800' : 'bg-pink-200'
+                }`}>
                 <Users className={`h-6 w-6 ${isDarkMode ? 'text-pink-300' : 'text-pink-600'}`} />
               </div>
             </div>
           </div>
-          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-green-900 to-emerald-900 shadow-lg' 
-              : 'bg-gradient-to-br from-green-50 to-emerald-100 shadow-md'
-          }`}>
+          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${isDarkMode
+            ? 'bg-gradient-to-br from-green-900 to-emerald-900 shadow-lg'
+            : 'bg-gradient-to-br from-green-50 to-emerald-100 shadow-md'
+            }`}>
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${isDarkMode ? 'text-green-300' : 'text-green-700'}`}>Infants & Toddlers</p>
@@ -506,18 +495,16 @@ const ChildManagement = () => {
                   {childStats.byAge.infant + childStats.byAge.toddler}
                 </p>
               </div>
-              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-                isDarkMode ? 'bg-green-800' : 'bg-green-200'
-              }`}>
+              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-green-800' : 'bg-green-200'
+                }`}>
                 <Baby className={`h-6 w-6 ${isDarkMode ? 'text-green-300' : 'text-green-600'}`} />
               </div>
             </div>
           </div>
-          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-purple-900 to-indigo-900 shadow-lg' 
-              : 'bg-gradient-to-br from-purple-50 to-indigo-100 shadow-md'
-          }`}>
+          <div className={`p-6 rounded-xl transform transition-all duration-300 hover:scale-105 ${isDarkMode
+            ? 'bg-gradient-to-br from-purple-900 to-indigo-900 shadow-lg'
+            : 'bg-gradient-to-br from-purple-50 to-indigo-100 shadow-md'
+            }`}>
             <div className="flex items-center justify-between">
               <div>
                 <p className={`text-sm ${isDarkMode ? 'text-purple-300' : 'text-purple-700'}`}>Preschool & Kinder</p>
@@ -525,9 +512,8 @@ const ChildManagement = () => {
                   {childStats.byAge.preschool + childStats.byAge.kindergarten}
                 </p>
               </div>
-              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${
-                isDarkMode ? 'bg-purple-800' : 'bg-purple-200'
-              }`}>
+              <div className={`h-12 w-12 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-purple-800' : 'bg-purple-200'
+                }`}>
                 <Calendar className={`h-6 w-6 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`} />
               </div>
             </div>
@@ -535,40 +521,35 @@ const ChildManagement = () => {
         </div>
 
         {/* Search and Filter */}
-        <div className={`p-6 rounded-xl mb-6 shadow-md backdrop-blur-sm ${
-          isDarkMode ? 'bg-gray-800 bg-opacity-70' : 'bg-white bg-opacity-80'
-        }`}>
+        <div className={`p-6 rounded-xl mb-6 shadow-md backdrop-blur-sm ${isDarkMode ? 'bg-gray-800 bg-opacity-70' : 'bg-white bg-opacity-80'
+          }`}>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                }`} />
+                <Search className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`} />
                 <input
                   type="text"
                   placeholder="Search children by name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-full ${
-                    isDarkMode
-                      ? 'bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:bg-gray-600'
-                      : 'bg-gray-50 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500'
-                  }`}
+                  className={`w-full pl-10 pr-4 py-2.5 rounded-full ${isDarkMode
+                    ? 'bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:bg-gray-600'
+                    : 'bg-gray-50 text-gray-900 placeholder-gray-500 focus:ring-2 focus:ring-indigo-500'
+                    }`}
                 />
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Filter className={`h-4 w-4 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-500'
-              }`} />
+              <Filter className={`h-4 w-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                }`} />
               <select
                 value={filterAge}
                 onChange={(e) => setFilterAge(e.target.value)}
-                className={`rounded-full px-3 py-2.5 ${
-                  isDarkMode
-                    ? 'bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500'
-                    : 'bg-gray-50 text-gray-900 focus:ring-2 focus:ring-indigo-500'
-                }`}
+                className={`rounded-full px-3 py-2.5 ${isDarkMode
+                  ? 'bg-gray-700 text-white focus:ring-2 focus:ring-indigo-500'
+                  : 'bg-gray-50 text-gray-900 focus:ring-2 focus:ring-indigo-500'
+                  }`}
               >
                 <option value="all">All Ages</option>
                 <option value="infant">Infants (0-1 yr)</option>
@@ -581,26 +562,24 @@ const ChildManagement = () => {
         </div>
 
         {/* Children List */}
-        <div className={`rounded-xl shadow-md overflow-hidden backdrop-blur-sm ${
-          isDarkMode ? 'bg-gray-800 bg-opacity-70' : 'bg-white bg-opacity-80'
-        }`}>
+        <div className={`rounded-xl shadow-md overflow-hidden backdrop-blur-sm ${isDarkMode ? 'bg-gray-800 bg-opacity-70' : 'bg-white bg-opacity-80'
+          }`}>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className={`${
-                isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
-              }`}>
+              <thead className={`${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'
+                }`}>
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Child
+                    Player
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Age
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Parent
+                    Contact
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                    Allergies
+                    Notes / Stats
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                     Duration
@@ -613,18 +592,16 @@ const ChildManagement = () => {
               <tbody className="divide-y divide-gray-200">
                 {filteredChildren.length > 0 ? (
                   filteredChildren.map((child) => (
-                    <tr key={child.id} className={`${
-                      isDarkMode 
-                        ? 'hover:bg-gray-700 transition-colors' 
-                        : 'hover:bg-gray-50 transition-colors'
-                    }`}>
+                    <tr key={child.id} className={`${isDarkMode
+                      ? 'hover:bg-gray-700 transition-colors'
+                      : 'hover:bg-gray-50 transition-colors'
+                      }`}>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                            child.gender === 'female' 
-                              ? isDarkMode ? 'bg-gradient-to-r from-pink-600 to-purple-600' : 'bg-gradient-to-r from-pink-500 to-purple-500'
-                              : isDarkMode ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-gradient-to-r from-blue-500 to-indigo-500'
-                          }`}>
+                          <div className={`h-10 w-10 rounded-full flex items-center justify-center ${child.gender === 'female'
+                            ? isDarkMode ? 'bg-gradient-to-r from-pink-600 to-purple-600' : 'bg-gradient-to-r from-pink-500 to-purple-500'
+                            : isDarkMode ? 'bg-gradient-to-r from-blue-600 to-indigo-600' : 'bg-gradient-to-r from-blue-500 to-indigo-500'
+                            }`}>
                             <span className="text-white font-medium">
                               {(child.firstName || '').charAt(0).toUpperCase()}
                             </span>
@@ -653,33 +630,30 @@ const ChildManagement = () => {
                         <div className="flex justify-end space-x-2">
                           <button
                             onClick={() => handleViewChild(child)}
-                            className={`p-1.5 rounded-full transition-colors ${
-                              isDarkMode
-                                ? 'bg-gray-700 text-indigo-400 hover:bg-gray-600'
-                                : 'bg-gray-100 text-indigo-600 hover:bg-gray-200'
-                            }`}
+                            className={`p-1.5 rounded-full transition-colors ${isDarkMode
+                              ? 'bg-gray-700 text-indigo-400 hover:bg-gray-600'
+                              : 'bg-gray-100 text-indigo-600 hover:bg-gray-200'
+                              }`}
                             title="View details"
                           >
                             <Info className="h-4 w-4" />
                           </button>
                           <button
                             onClick={(e) => handleEditChild(child, e)}
-                            className={`p-1.5 rounded-full transition-colors ${
-                              isDarkMode
-                                ? 'bg-gray-700 text-green-400 hover:bg-gray-600'
-                                : 'bg-gray-100 text-green-600 hover:bg-gray-200'
-                            }`}
+                            className={`p-1.5 rounded-full transition-colors ${isDarkMode
+                              ? 'bg-gray-700 text-green-400 hover:bg-gray-600'
+                              : 'bg-gray-100 text-green-600 hover:bg-gray-200'
+                              }`}
                             title="Edit child"
                           >
                             <Edit className="h-4 w-4" />
                           </button>
                           <button
                             onClick={(e) => handleDeleteChild(child, e)}
-                            className={`p-1.5 rounded-full transition-colors ${
-                              isDarkMode
-                                ? 'bg-gray-700 text-red-400 hover:bg-gray-600'
-                                : 'bg-gray-100 text-red-600 hover:bg-gray-200'
-                            }`}
+                            className={`p-1.5 rounded-full transition-colors ${isDarkMode
+                              ? 'bg-gray-700 text-red-400 hover:bg-gray-600'
+                              : 'bg-gray-100 text-red-600 hover:bg-gray-200'
+                              }`}
                             title="Delete child"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -699,9 +673,8 @@ const ChildManagement = () => {
                             setSearchTerm('');
                             setFilterAge('all');
                           }}
-                          className={`mt-2 text-sm ${
-                            isDarkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'
-                          }`}
+                          className={`mt-2 text-sm ${isDarkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'
+                            }`}
                         >
                           Clear filters
                         </button>
@@ -718,20 +691,18 @@ const ChildManagement = () => {
       {/* View/Edit Child Modal */}
       {showEditModal && editingChild && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className={`rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${
-            isDarkMode ? 'bg-gray-800' : 'bg-white'
-          }`}>
+          <div className={`rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+            }`}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">
-                {isEditMode ? 'Edit Child Information' : 'Child Information'}
+                {isEditMode ? 'Edit Player Information' : 'Player Information'}
               </h2>
               <button
                 onClick={() => setShowEditModal(false)}
-                className={`p-1 rounded-md ${
-                  isDarkMode
-                    ? 'hover:bg-gray-700'
-                    : 'hover:bg-gray-100'
-                }`}
+                className={`p-1 rounded-md ${isDarkMode
+                  ? 'hover:bg-gray-700'
+                  : 'hover:bg-gray-100'
+                  }`}
               >
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -750,7 +721,7 @@ const ChildManagement = () => {
                 {updateError}
               </div>
             )}
-            
+
             {isEditMode ? (
               <form onSubmit={handleUpdateChild}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -764,11 +735,10 @@ const ChildManagement = () => {
                           name="firstName"
                           value={formData.firstName}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                           required
                         />
                       </div>
@@ -779,11 +749,10 @@ const ChildManagement = () => {
                           name="lastName"
                           value={formData.lastName}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                           required
                         />
                       </div>
@@ -794,11 +763,10 @@ const ChildManagement = () => {
                           name="dateOfBirth"
                           value={formData.dateOfBirth}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         />
                       </div>
                       <div>
@@ -807,11 +775,10 @@ const ChildManagement = () => {
                           name="gender"
                           value={formData.gender}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         >
                           <option value="">Select Gender</option>
                           <option value="male">Male</option>
@@ -825,11 +792,10 @@ const ChildManagement = () => {
                           name="duration"
                           value={formData.duration}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         >
                           <option value="full-day">Full-day</option>
                           <option value="half-day-morning">Half-day (Morning)</option>
@@ -842,11 +808,10 @@ const ChildManagement = () => {
                           name="status"
                           value={formData.status}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         >
                           <option value="active">Active</option>
                           <option value="inactive">Inactive</option>
@@ -854,7 +819,7 @@ const ChildManagement = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Health Information</h3>
                     <div className="space-y-3">
@@ -865,11 +830,10 @@ const ChildManagement = () => {
                           name="allergies"
                           value={formData.allergies}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                           placeholder="None"
                         />
                       </div>
@@ -880,11 +844,10 @@ const ChildManagement = () => {
                           name="specialNeeds"
                           value={formData.specialNeeds}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                           placeholder="None"
                         />
                       </div>
@@ -895,11 +858,10 @@ const ChildManagement = () => {
                           name="medications"
                           value={formData.medications}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                           placeholder="None"
                         />
                       </div>
@@ -913,15 +875,14 @@ const ChildManagement = () => {
                       value={formData.specialInstructions}
                       onChange={handleInputChange}
                       rows="3"
-                      className={`w-full rounded-md ${
-                        isDarkMode 
-                          ? 'bg-gray-700 border-gray-600' 
-                          : 'bg-white border-gray-300'
-                      } p-2 border`}
+                      className={`w-full rounded-md ${isDarkMode
+                        ? 'bg-gray-700 border-gray-600'
+                        : 'bg-white border-gray-300'
+                        } p-2 border`}
                       placeholder="Any special instructions"
                     ></textarea>
                   </div>
-                  
+
                   <div className="md:col-span-2">
                     <h3 className="text-lg font-semibold mb-2">Emergency Contact</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -932,11 +893,10 @@ const ChildManagement = () => {
                           name="emergencyContact"
                           value={formData.emergencyContact}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         />
                       </div>
                       <div>
@@ -946,11 +906,10 @@ const ChildManagement = () => {
                           name="emergencyPhone"
                           value={formData.emergencyPhone}
                           onChange={handleInputChange}
-                          className={`w-full rounded-md ${
-                            isDarkMode 
-                              ? 'bg-gray-700 border-gray-600' 
-                              : 'bg-white border-gray-300'
-                          } p-2 border`}
+                          className={`w-full rounded-md ${isDarkMode
+                            ? 'bg-gray-700 border-gray-600'
+                            : 'bg-white border-gray-300'
+                            } p-2 border`}
                         />
                       </div>
                     </div>
@@ -965,22 +924,20 @@ const ChildManagement = () => {
                       setUpdateError('');
                       setUpdateSuccess('');
                     }}
-                    className={`px-4 py-2 rounded-md ${
-                      isDarkMode
-                        ? 'bg-gray-700 text-white hover:bg-gray-600'
-                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                    }`}
+                    className={`px-4 py-2 rounded-md ${isDarkMode
+                      ? 'bg-gray-700 text-white hover:bg-gray-600'
+                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                      }`}
                     disabled={updateLoading}
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className={`px-4 py-2 rounded-md ${
-                      isDarkMode
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    } ${updateLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    className={`px-4 py-2 rounded-md ${isDarkMode
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                      } ${updateLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     disabled={updateLoading}
                   >
                     {updateLoading ? 'Saving...' : 'Save Changes'}
@@ -1023,7 +980,7 @@ const ChildManagement = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Parent Information</h3>
                     <div className="space-y-3">
@@ -1064,7 +1021,7 @@ const ChildManagement = () => {
                       <p className="text-base">{editingChild.specialInstructions}</p>
                     </div>
                   )}
-                  
+
                   <div className="md:col-span-2">
                     <h3 className="text-lg font-semibold mb-2">Emergency Contact</h3>
                     <div className="space-y-3">
@@ -1083,23 +1040,21 @@ const ChildManagement = () => {
                 <div className="flex justify-end mt-6 space-x-2">
                   <button
                     onClick={() => setShowEditModal(false)}
-                    className={`px-4 py-2 rounded-md ${
-                      isDarkMode
-                        ? 'bg-gray-700 text-white hover:bg-gray-600'
-                        : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                    }`}
+                    className={`px-4 py-2 rounded-md ${isDarkMode
+                      ? 'bg-gray-700 text-white hover:bg-gray-600'
+                      : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                      }`}
                   >
                     Close
                   </button>
                   <button
                     onClick={() => {
-                      handleEditChild(editingChild, { stopPropagation: () => {} });
+                      handleEditChild(editingChild, { stopPropagation: () => { } });
                     }}
-                    className={`px-4 py-2 rounded-md ${
-                      isDarkMode
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-blue-500 text-white hover:bg-blue-600'
-                    }`}
+                    className={`px-4 py-2 rounded-md ${isDarkMode
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-blue-500 text-white hover:bg-blue-600'
+                      }`}
                   >
                     Edit
                   </button>
@@ -1114,9 +1069,8 @@ const ChildManagement = () => {
       {showRegisterModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="fixed inset-0 bg-black opacity-50" onClick={handleRegisterModalClose}></div>
-          <div className={`relative w-full max-w-4xl p-6 mx-4 rounded-lg shadow-lg overflow-hidden ${
-            isDarkMode ? 'bg-gray-800' : 'bg-white'
-          }`}>
+          <div className={`relative w-full max-w-4xl p-6 mx-4 rounded-lg shadow-lg overflow-hidden ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+            }`}>
             <button
               onClick={handleRegisterModalClose}
               className={`absolute top-4 right-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-500'} hover:text-gray-700 z-10`}
@@ -1126,7 +1080,7 @@ const ChildManagement = () => {
               </svg>
             </button>
             <h2 className="text-2xl font-bold mb-6">Register Child with Guardian</h2>
-            
+
             <div className="w-full max-h-[80vh] overflow-y-auto pr-2">
               <ChildRegistration embedded={true} onComplete={handleRegisterModalClose} />
             </div>
@@ -1137,45 +1091,42 @@ const ChildManagement = () => {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && deletingChild && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className={`rounded-lg p-6 max-w-md w-full ${
-            isDarkMode ? 'bg-gray-800' : 'bg-white'
-          }`}>
+          <div className={`rounded-lg p-6 max-w-md w-full ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+            }`}>
             <div className="flex items-center mb-4">
               <AlertTriangle className={`h-6 w-6 mr-2 ${isDarkMode ? 'text-red-400' : 'text-red-600'}`} />
               <h2 className="text-xl font-bold">Confirm Deletion</h2>
             </div>
-            
+
             <p className="mb-6">
-              Are you sure you want to delete {deletingChild.firstName} {deletingChild.lastName}? 
+              Are you sure you want to delete {deletingChild.firstName} {deletingChild.lastName}?
               This action cannot be undone.
             </p>
-            
+
             {deleteError && (
               <div className="mb-4 p-3 bg-red-100 text-red-800 rounded">
                 {deleteError}
               </div>
             )}
-            
+
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowDeleteModal(false)}
                 disabled={deleteLoading}
-                className={`px-4 py-2 rounded-md ${
-                  isDarkMode 
-                    ? 'bg-gray-700 text-white hover:bg-gray-600' 
-                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
-                }`}
+                className={`px-4 py-2 rounded-md ${isDarkMode
+                  ? 'bg-gray-700 text-white hover:bg-gray-600'
+                  : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                  }`}
               >
                 Cancel
               </button>
               <button
                 onClick={confirmDeleteChild}
                 disabled={deleteLoading}
-                className={`px-4 py-2 rounded-md ${
-                  isDarkMode
-                    ? 'bg-red-600 text-white hover:bg-red-700'
-                    : 'bg-red-600 text-white hover:bg-red-700'
-                } ${deleteLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`px-4 py-2 rounded-md ${isDarkMode
+                  ? 'bg-red-600 text-white hover:bg-red-700'
+                  : 'bg-red-600 text-white hover:bg-red-700'
+                  } ${deleteLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
               >
                 {deleteLoading ? 'Deleting...' : 'Delete'}
               </button>

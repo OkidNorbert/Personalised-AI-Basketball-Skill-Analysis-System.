@@ -16,6 +16,7 @@ import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import ScheduleVisit from '@/pages/ScheduleVisit';
 import Gallery from '@/pages/Gallery';
+import AccountTypeSelection from '@/pages/AccountTypeSelection';
 
 // Admin Pages
 import AdminHome from '@/pages/admin/AdminHome';
@@ -44,6 +45,7 @@ import ParentManagement from '@/pages/admin/GuardianManagement';
 import Settings from '@/pages/admin/SystemSettings';
 import BabysitterUpdate from '@/pages/admin/BabysitterUpdate';
 import IncidentManagement from '@/pages/admin/IncidentManagement';
+import MatchAnalysis from '@/pages/admin/MatchAnalysis';
 
 // Babysitter Pages
 import BabysitterHome from '@/pages/babysitter/BabysitterHome';
@@ -55,6 +57,7 @@ import BabysitterNotifications from '@/pages/babysitter/BabysitterNotifications'
 import ChildAttendance from '@/pages/babysitter/ChildAttendance';
 import IncidentReport from '@/pages/babysitter/IncidentReport';
 import Children from '@/pages/babysitter/Children';
+import TrainingAnalysis from '@/pages/babysitter/TrainingAnalysis';
 
 function App() {
   return (
@@ -81,53 +84,31 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="schedule-visit" element={<ScheduleVisit />} />
               <Route path="gallery" element={<Gallery />} />
+              <Route path="select-account" element={<AccountTypeSelection />} />
             </Route>
 
-            {/* Admin Routes */}
-            <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']} />}>
+            {/* Team Routes (formerly Admin) */}
+            <Route path="/team" element={<ProtectedRoute allowedRoles={['admin']} />}>
               <Route element={<AdminLayout />}>
                 <Route index element={<AdminHome />} />
                 <Route path="dashboard" element={<AdminHome />} />
-                <Route path="users" element={<UserManagement />} />
-                <Route path="babysitters" element={<BabysitterManagement />} />
-                <Route path="babysitter-registration" element={<BabysitterRegistration />} />
-                <Route path="babysitters/:id/update" element={<BabysitterUpdate />} />
-                <Route path="babysitters/:id/schedule" element={<BabysitterSchedule />} />
-                <Route path="babysitters/:id/payments" element={<BabysitterPayments />} />
-                <Route path="children" element={<ChildManagement />} />
-                <Route path="parents" element={<ParentManagement />} />
-                <Route path="schedule" element={<Schedule />} />
-                <Route path="payments" element={<Payments />} />
-                <Route path="child-payment" element={<ChildPayment />} />
-                <Route path="babysitter-payments" element={<BabysitterPaymentManagement />} />
-                <Route path="incidents" element={<IncidentManagement />} />
-                <Route path="reports" element={<Reports />} />
-                <Route path="data-management" element={<DataManagement />} />
+                <Route path="management" element={<ChildManagement />} />
+                <Route path="analysis" element={<MatchAnalysis />} />
+                <Route path="stats" element={<Analytics />} />
                 <Route path="settings" element={<SystemSettings />} />
                 <Route path="notifications" element={<Notifications />} />
-                <Route path="analytics" element={<Analytics />} />
-                <Route path="child-registration" element={<ChildRegistration />} />
-                <Route path="attendance" element={<Attendance />} />
-                <Route path="communications" element={<Communications />} />
-                <Route path="security" element={<Security />} />
                 <Route path="profile" element={<AdminProfile />} />
               </Route>
             </Route>
 
-            {/* Babysitter Routes */}
-            <Route path="/babysitter" element={<ProtectedRoute allowedRoles={['babysitter']} />}>
+            {/* Player Routes (formerly Babysitter) */}
+            <Route path="/player" element={<ProtectedRoute allowedRoles={['babysitter']} />}>
               <Route element={<BabysitterLayout />}>
                 <Route index element={<BabysitterHome />} />
-                <Route path="home" element={<BabysitterHome />} />
+                <Route path="training" element={<TrainingAnalysis />} />
+                <Route path="skills" element={<ChildAttendance />} />
                 <Route path="profile" element={<BabysitterProfile />} />
-                <Route path="schedule" element={<MySchedule />} />
-                <Route path="children" element={<Children />} />
-                <Route path="children/:id" element={<ChildDetail />} />
-                <Route path="payments" element={<BabysitterPayments />} />
-                <Route path="reports" element={<BabysitterReports />} />
                 <Route path="notifications" element={<BabysitterNotifications />} />
-                <Route path="attendance" element={<ChildAttendance />} />
-                <Route path="incidents" element={<IncidentReport />} />
               </Route>
             </Route>
 

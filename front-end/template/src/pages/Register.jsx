@@ -18,17 +18,20 @@ const Register = () => {
 
   useEffect(() => {
     if (user) {
-      // Redirect based on user role
-      switch (user.role) {
-        case 'admin':
-          navigate('/admin');
-          break;
-          break;
-        case 'babysitter':
-          navigate('/babysitter');
-          break;
-        default:
-          navigate('/');
+      if (!user.role) {
+        navigate('/select-account');
+      } else {
+        // Redirect based on user role
+        switch (user.role) {
+          case 'admin':
+            navigate('/team');
+            break;
+          case 'babysitter':
+            navigate('/player');
+            break;
+          default:
+            navigate('/');
+        }
       }
     }
   }, [user, navigate]);
@@ -56,8 +59,7 @@ const Register = () => {
       const result = await register({
         name: formData.name,
         email: formData.email,
-        password: formData.password,
-        role: 'admin' // Set role to admin by default
+        password: formData.password
       });
 
       if (!result.success) {
@@ -77,18 +79,15 @@ const Register = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center">
-      <div className={`max-w-md w-full space-y-8 p-8 rounded-xl shadow-lg transition-colors duration-300 ${
-        isDarkMode ? 'bg-gray-800' : 'bg-white'
-      }`}>
+      <div className={`max-w-md w-full space-y-8 p-8 rounded-xl shadow-lg transition-colors duration-300 ${isDarkMode ? 'bg-gray-800' : 'bg-white'
+        }`}>
         <div className="text-center">
-          <h2 className={`text-3xl font-bold ${
-            isDarkMode ? 'text-white' : 'text-gray-900'
-          }`}>
+          <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'
+            }`}>
             Create an Account
           </h2>
-          <p className={`mt-2 ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-600'
-          }`}>
+          <p className={`mt-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'
+            }`}>
             Join our daycare management system
           </p>
         </div>
@@ -102,9 +101,8 @@ const Register = () => {
 
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className={`block text-sm font-medium ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
-              }`}>
+              <label htmlFor="name" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                 Full Name
               </label>
               <input
@@ -114,19 +112,17 @@ const Register = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                }`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${isDarkMode
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
                 placeholder="Enter your full name"
               />
             </div>
 
             <div>
-              <label htmlFor="email" className={`block text-sm font-medium ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
-              }`}>
+              <label htmlFor="email" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                 Email address
               </label>
               <input
@@ -136,19 +132,17 @@ const Register = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                }`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${isDarkMode
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
                 placeholder="Enter your email"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className={`block text-sm font-medium ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
-              }`}>
+              <label htmlFor="password" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                 Password
               </label>
               <input
@@ -158,19 +152,17 @@ const Register = () => {
                 required
                 value={formData.password}
                 onChange={handleChange}
-                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                }`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${isDarkMode
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
                 placeholder="Create a password"
               />
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className={`block text-sm font-medium ${
-                isDarkMode ? 'text-gray-300' : 'text-gray-700'
-              }`}>
+              <label htmlFor="confirmPassword" className={`block text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                }`}>
                 Confirm Password
               </label>
               <input
@@ -180,11 +172,10 @@ const Register = () => {
                 required
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${
-                  isDarkMode
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                }`}
+                className={`mt-1 block w-full px-3 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${isDarkMode
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                  }`}
                 placeholder="Confirm your password"
               />
             </div>
@@ -194,9 +185,8 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 ${
-                isLoading ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors duration-200 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
             >
               {isLoading ? (
                 <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -210,9 +200,8 @@ const Register = () => {
           </div>
 
           <div className="text-center">
-            <p className={`text-sm ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
               Already have an account?{' '}
               <Link
                 to="/login"

@@ -104,7 +104,7 @@ const Analytics = () => {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       });
-      
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement('a');
       link.href = url;
@@ -239,16 +239,15 @@ const Analytics = () => {
     <div className={`min-h-screen p-6 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Analytics Dashboard</h1>
+          <h1 className="text-2xl font-bold">Team Performance Analytics</h1>
           <div className="flex items-center space-x-4">
             <select
               value={dateRange}
               onChange={(e) => setDateRange(e.target.value)}
-              className={`rounded-md ${
-                isDarkMode
+              className={`rounded-md ${isDarkMode
                   ? 'bg-gray-700 text-white'
                   : 'bg-gray-50 text-gray-900'
-              }`}
+                }`}
             >
               <option value="week">Last Week</option>
               <option value="month">Last Month</option>
@@ -257,11 +256,10 @@ const Analytics = () => {
             </select>
             <button
               onClick={fetchAnalytics}
-              className={`flex items-center space-x-2 px-3 py-2 rounded-md ${
-                isDarkMode
+              className={`flex items-center space-x-2 px-3 py-2 rounded-md ${isDarkMode
                   ? 'bg-gray-700 hover:bg-gray-600 text-white'
                   : 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-              }`}
+                }`}
               disabled={loading}
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -269,11 +267,10 @@ const Analytics = () => {
             </button>
             <button
               onClick={handleDownloadReport}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-md ${
-                isDarkMode
+              className={`flex items-center space-x-2 px-4 py-2 rounded-md ${isDarkMode
                   ? 'bg-blue-600 hover:bg-blue-700 text-white'
                   : 'bg-blue-500 hover:bg-blue-600 text-white'
-              }`}
+                }`}
               disabled={loading}
             >
               <Download className="h-4 w-4" />
@@ -283,9 +280,8 @@ const Analytics = () => {
         </div>
 
         {error && (
-          <div className={`mb-4 p-4 rounded-md flex items-center ${
-            isDarkMode ? 'bg-red-900/30 text-red-400' : 'bg-red-100 text-red-700'
-          }`}>
+          <div className={`mb-4 p-4 rounded-md flex items-center ${isDarkMode ? 'bg-red-900/30 text-red-400' : 'bg-red-100 text-red-700'
+            }`}>
             <AlertCircle className="h-5 w-5 mr-2" />
             <span>{error}</span>
           </div>
@@ -296,37 +292,37 @@ const Analytics = () => {
           <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Total Enrollment</p>
+                <p className="text-sm text-gray-500">Possessions Analyzed</p>
                 <p className="text-2xl font-bold">{analyticsData.enrollment.total}</p>
               </div>
-              <Users className="h-8 w-8 text-blue-500" />
+              <Activity className="h-8 w-8 text-blue-500" />
             </div>
           </div>
           <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Total Revenue</p>
-                <p className="text-2xl font-bold">${analyticsData.revenue.total.toLocaleString()}</p>
-              </div>
-              <DollarSign className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Average Attendance</p>
-                <p className="text-2xl font-bold">{analyticsData.attendance.average}%</p>
-              </div>
-              <Calendar className="h-8 w-8 text-yellow-500" />
-            </div>
-          </div>
-          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-500">Growth Rate</p>
-                <p className="text-2xl font-bold text-green-500">+12.5%</p>
+                <p className="text-sm text-gray-500">Points Per Possession</p>
+                <p className="text-2xl font-bold">1.12</p>
               </div>
               <TrendingUp className="h-8 w-8 text-green-500" />
+            </div>
+          </div>
+          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Shooting Accuracy</p>
+                <p className="text-2xl font-bold">48.5%</p>
+              </div>
+              <BarChartIcon className="h-8 w-8 text-yellow-500" />
+            </div>
+          </div>
+          <div className={`p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500">Defensive Rating</p>
+                <p className="text-2xl font-bold text-red-500">-4.2</p>
+              </div>
+              <Users className="h-8 w-8 text-red-500" />
             </div>
           </div>
         </div>
@@ -394,8 +390,8 @@ const Analytics = () => {
                   <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-purple-500"></div>
                 </div>
               ) : (
-                <Bar 
-                  data={performanceChartData} 
+                <Bar
+                  data={performanceChartData}
                   options={{
                     ...chartOptions,
                     indexAxis: 'y',
@@ -406,7 +402,7 @@ const Analytics = () => {
                         suggestedMax: 100
                       }
                     }
-                  }} 
+                  }}
                 />
               )}
             </div>

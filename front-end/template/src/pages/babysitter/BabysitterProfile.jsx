@@ -20,7 +20,7 @@ import {
   Baby
 } from 'lucide-react';
 
-const BabysitterProfile = () => {
+const PlayerProfile = () => {
   const [profile, setProfile] = useState({
     firstName: '',
     lastName: '',
@@ -101,9 +101,9 @@ const BabysitterProfile = () => {
       // Create form data
       const formData = new FormData();
       formData.append('image', file);
-      
+
       console.log('Attempting to upload image...');
-      
+
       // Make API call with correct headers and configuration
       const response = await api.post('/babysitter/profile/image', formData, {
         headers: {
@@ -117,23 +117,23 @@ const BabysitterProfile = () => {
         }],
         timeout: 30000 // 30 seconds timeout for larger files
       });
-      
+
       console.log('Upload successful:', response.data);
-      
+
       if (response.data && response.data.imageUrl) {
         // Update profile state with the new image URL
-      setProfile(prev => ({
-        ...prev,
-        profileImage: response.data.imageUrl
-      }));
-      setSuccess('Profile image updated successfully');
+        setProfile(prev => ({
+          ...prev,
+          profileImage: response.data.imageUrl
+        }));
+        setSuccess('Profile image updated successfully');
       } else {
         console.error('Unexpected server response:', response.data);
         setError('Failed to upload image: Invalid server response');
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      
+
       // Enhanced error handling with detailed information
       if (error.response) {
         // Server responded with an error status
@@ -142,14 +142,14 @@ const BabysitterProfile = () => {
           statusText: error.response.statusText,
           data: error.response.data
         });
-        
+
         // Extract meaningful error message
-        const errorMsg = error.response.data?.message || 
-                         error.response.statusText || 
-                         `Server error (${error.response.status})`;
-                         
+        const errorMsg = error.response.data?.message ||
+          error.response.statusText ||
+          `Server error (${error.response.status})`;
+
         setError(`Upload failed: ${errorMsg}`);
-        
+
         if (error.response.status === 403) {
           setError('Permission denied. Make sure you are logged in and have permission to upload images.');
         }
@@ -200,50 +200,48 @@ const BabysitterProfile = () => {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDarkMode 
-        ? 'bg-gray-900 text-white' 
-        : 'bg-blue-50 text-gray-800'
-    }`}>
+    <div className={`min-h-screen transition-colors duration-300 ${isDarkMode
+      ? 'bg-gray-900 text-white'
+      : 'bg-blue-50 text-gray-800'
+      }`}>
       {/* African pattern decoration - top decoration */}
       <div className="h-2 w-full bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500"></div>
 
       {/* Profile header */}
       <div className={`
-        ${isDarkMode 
-          ? 'bg-gradient-to-r from-gray-900 via-indigo-950 to-purple-900' 
+        ${isDarkMode
+          ? 'bg-gradient-to-r from-gray-900 via-indigo-950 to-purple-900'
           : 'bg-gradient-to-r from-blue-500 to-indigo-600'
         }
         py-10 px-6 shadow-lg relative z-10
       `}>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-6">
           {/* Profile image */}
-              <div className="relative">
+          <div className="relative">
             <div className="w-36 h-36 rounded-full border-4 border-white overflow-hidden shadow-lg">
-                  {profile.profileImage ? (
-                    <img
-                      src={profile.profileImage}
-                      alt="Profile"
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className={`w-full h-full flex items-center justify-center ${
-                  isDarkMode ? 'bg-indigo-800' : 'bg-indigo-300'
-                    }`}>
+              {profile.profileImage ? (
+                <img
+                  src={profile.profileImage}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className={`w-full h-full flex items-center justify-center ${isDarkMode ? 'bg-indigo-800' : 'bg-indigo-300'
+                  }`}>
                   <User className="h-20 w-20 text-white" />
                 </div>
               )}
               <label className="absolute bottom-2 right-2 p-2 rounded-full cursor-pointer bg-yellow-400 hover:bg-yellow-300 text-gray-900 shadow-lg transition-all duration-200 transform hover:scale-110">
                 <Camera className="h-5 w-5" />
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="hidden"
-                  />
-                </label>
-              </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
             </div>
+          </div>
 
           {/* Profile name and title */}
           <div className="text-center md:text-left md:flex-1">
@@ -251,10 +249,10 @@ const BabysitterProfile = () => {
               {profile.firstName} {profile.lastName}
             </h1>
             <div className="flex items-center justify-center md:justify-start mt-2 text-indigo-100">
-              <Baby className="h-5 w-5 mr-2" />
-              <span className="font-medium">Daystar Babysitter</span>
+              <Activity className="h-5 w-5 mr-2" />
+              <span className="font-medium">BAKO Personal Player</span>
             </div>
-            
+
             {/* Quick stats */}
             <div className="flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
               <div className="bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-lg flex items-center text-white">
@@ -262,18 +260,18 @@ const BabysitterProfile = () => {
                 <span>{profile.experience || 0} years experience</span>
               </div>
               <div className="bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-lg flex items-center text-white">
-                <Heart className="h-5 w-5 mr-2 text-pink-400" />
-                <span>Caring Professional</span>
+                <Award className="h-5 w-5 mr-2 text-orange-400" />
+                <span>Dedicated Athlete</span>
               </div>
             </div>
           </div>
 
           {/* Edit button */}
-          <button 
+          <button
             onClick={() => setIsEditing(!isEditing)}
             className={`
-              ${isDarkMode 
-                ? 'bg-indigo-600 hover:bg-indigo-700 text-white' 
+              ${isDarkMode
+                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
                 : 'bg-yellow-400 hover:bg-yellow-500 text-gray-900'
               }
               px-6 py-3 rounded-lg font-medium flex items-center shadow-lg transition-all duration-200 transform hover:scale-105
@@ -320,10 +318,10 @@ const BabysitterProfile = () => {
                   Personal Information
                 </h2>
               </div>
-              
+
               <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Name */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     First Name
                   </label>
@@ -335,9 +333,9 @@ const BabysitterProfile = () => {
                     disabled={!isEditing}
                     className={`
                       w-full px-4 py-3 rounded-lg border 
-                      ${isEditing 
-                        ? isDarkMode 
-                          ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                      ${isEditing
+                        ? isDarkMode
+                          ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                           : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                         : isDarkMode
                           ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -347,10 +345,10 @@ const BabysitterProfile = () => {
                     `}
                     required
                   />
-              </div>
+                </div>
 
                 {/* Last Name */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Last Name
                   </label>
@@ -362,9 +360,9 @@ const BabysitterProfile = () => {
                     disabled={!isEditing}
                     className={`
                       w-full px-4 py-3 rounded-lg border 
-                      ${isEditing 
-                        ? isDarkMode 
-                          ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                      ${isEditing
+                        ? isDarkMode
+                          ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                           : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                         : isDarkMode
                           ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -374,28 +372,27 @@ const BabysitterProfile = () => {
                     `}
                     required
                   />
-              </div>
+                </div>
 
                 {/* Email */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Email Address
                   </label>
-                <div className="relative">
-                  <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`} />
-                  <input
-                    type="email"
-                    name="email"
-                    value={profile.email}
-                    onChange={handleInputChange}
+                  <div className="relative">
+                    <Mail className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`} />
+                    <input
+                      type="email"
+                      name="email"
+                      value={profile.email}
+                      onChange={handleInputChange}
                       disabled={!isEditing}
                       className={`
                         w-full pl-10 pr-4 py-3 rounded-lg border 
-                        ${isEditing 
-                          ? isDarkMode 
-                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                        ${isEditing
+                          ? isDarkMode
+                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                             : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                           : isDarkMode
                             ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -403,31 +400,30 @@ const BabysitterProfile = () => {
                         }
                         transition-colors
                       `}
-                    required
-                  />
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
                 {/* Phone */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Phone Number
                   </label>
-                <div className="relative">
-                  <Phone className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`} />
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={profile.phone}
-                    onChange={handleInputChange}
+                  <div className="relative">
+                    <Phone className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`} />
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={profile.phone}
+                      onChange={handleInputChange}
                       disabled={!isEditing}
                       className={`
                         w-full pl-10 pr-4 py-3 rounded-lg border 
-                        ${isEditing 
-                          ? isDarkMode 
-                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                        ${isEditing
+                          ? isDarkMode
+                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                             : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                           : isDarkMode
                             ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -435,31 +431,30 @@ const BabysitterProfile = () => {
                         }
                         transition-colors
                       `}
-                    required
-                  />
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
                 {/* Date of Birth */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Date of Birth
                   </label>
-                <div className="relative">
-                  <Calendar className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`} />
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={profile.dateOfBirth}
-                    onChange={handleInputChange}
+                  <div className="relative">
+                    <Calendar className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`} />
+                    <input
+                      type="date"
+                      name="dateOfBirth"
+                      value={profile.dateOfBirth}
+                      onChange={handleInputChange}
                       disabled={!isEditing}
                       className={`
                         w-full pl-10 pr-4 py-3 rounded-lg border 
-                        ${isEditing 
-                          ? isDarkMode 
-                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                        ${isEditing
+                          ? isDarkMode
+                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                             : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                           : isDarkMode
                             ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -467,32 +462,31 @@ const BabysitterProfile = () => {
                         }
                         transition-colors
                       `}
-                    required
-                  />
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
                 {/* Experience */}
-              <div>
+                <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Experience (years)
                   </label>
-                <div className="relative">
-                    <Briefcase className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                  }`} />
-                  <input
-                    type="number"
-                    name="experience"
-                    value={profile.experience}
-                    onChange={handleInputChange}
+                  <div className="relative">
+                    <Briefcase className={`absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                      }`} />
+                    <input
+                      type="number"
+                      name="experience"
+                      value={profile.experience}
+                      onChange={handleInputChange}
                       disabled={!isEditing}
-                    min="0"
+                      min="0"
                       className={`
                         w-full pl-10 pr-4 py-3 rounded-lg border 
-                        ${isEditing 
-                          ? isDarkMode 
-                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                        ${isEditing
+                          ? isDarkMode
+                            ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                             : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                           : isDarkMode
                             ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -500,8 +494,8 @@ const BabysitterProfile = () => {
                         }
                         transition-colors
                       `}
-                    required
-                  />
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -521,20 +515,20 @@ const BabysitterProfile = () => {
                   About Me
                 </h2>
               </div>
-              
+
               <div className="p-6">
-                  <textarea
+                <textarea
                   name="bio"
                   value={profile.bio || ''}
-                    onChange={handleInputChange}
+                  onChange={handleInputChange}
                   disabled={!isEditing}
                   rows="4"
-                  placeholder="Tell us about yourself, your background, and your passion for childcare..."
+                  placeholder="Tell us about your basketball background, your goals, and your training focus..."
                   className={`
                     w-full px-4 py-3 rounded-lg border 
-                    ${isEditing 
-                      ? isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500' 
+                    ${isEditing
+                      ? isDarkMode
+                        ? 'bg-gray-700 border-gray-600 text-white focus:border-indigo-500'
                         : 'bg-gray-50 border-gray-300 focus:border-indigo-500'
                       : isDarkMode
                         ? 'bg-gray-800 border-gray-700 text-gray-300'
@@ -553,8 +547,8 @@ const BabysitterProfile = () => {
                   type="submit"
                   disabled={saving}
                   className={`
-                    ${isDarkMode 
-                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white' 
+                    ${isDarkMode
+                      ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
                       : 'bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white'
                     }
                     px-6 py-3 rounded-lg font-medium flex items-center shadow-lg transition-all duration-200
@@ -594,7 +588,7 @@ const BabysitterProfile = () => {
                 Highlights
               </h2>
             </div>
-            
+
             <div className="p-6 space-y-4">
               <div className={`
                 rounded-lg p-4 flex items-center
@@ -609,7 +603,7 @@ const BabysitterProfile = () => {
                 <div className="ml-4">
                   <h3 className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Qualified Professional</h3>
                   <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {profile.qualifications || 'Early Childhood Education'}
+                    {profile.qualifications || 'Amateur Player'}
                   </p>
                 </div>
               </div>
@@ -622,12 +616,12 @@ const BabysitterProfile = () => {
                   w-12 h-12 rounded-full flex items-center justify-center
                   ${isDarkMode ? 'bg-purple-900 text-purple-300' : 'bg-purple-100 text-purple-600'}
                 `}>
-                  <Heart className="h-6 w-6" />
+                  <Zap className="h-6 w-6" />
                 </div>
                 <div className="ml-4">
-                  <h3 className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Passionate Caregiver</h3>
+                  <h3 className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>High Intensity</h3>
                   <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Dedicated to children's wellbeing
+                    Committed to peak performance
                   </p>
                 </div>
               </div>
@@ -643,9 +637,9 @@ const BabysitterProfile = () => {
                   <Baby className="h-6 w-6" />
                 </div>
                 <div className="ml-4">
-                  <h3 className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Child Development</h3>
+                  <h3 className={`font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>Drill Mastery</h3>
                   <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    Specialized in early learning
+                    Specialized in shot mechanics
                   </p>
                 </div>
               </div>
@@ -668,7 +662,7 @@ const BabysitterProfile = () => {
                   ${isDarkMode ? 'bg-indigo-900 text-indigo-200' : 'bg-indigo-100 text-indigo-700'}
                 `}>
                   <Clock className="h-4 w-4 mr-2" />
-                  Trusted Daystar babysitter
+                  BAKO Athletics Member
                 </div>
               </div>
             </div>
