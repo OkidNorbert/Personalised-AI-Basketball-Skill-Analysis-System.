@@ -20,7 +20,7 @@ import {
   Database
 } from 'lucide-react';
 
-const AdminSidebar = ({ isOpen }) => {
+const TeamSidebar = ({ isOpen }) => {
   const { isDarkMode } = useTheme();
 
   const menuItems = [
