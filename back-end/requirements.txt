@@ -1,27 +1,26 @@
-# Core ML/CV dependencies (existing)
-numpy==1.24.4
-opencv_python==4.9.0.80
-opencv_python_headless==4.8.0.74
-pandas==2.0.3
-Pillow==11.1.0
-roboflow==1.1.51
-supervision==0.25.1
-torch==2.2.0
-transformers==4.46.3
-ultralytics==8.3.67
+# Core ML/CV dependencies (Python 3.13 compatible)
+numpy>=1.26.0
+opencv-python>=4.9.0
+pandas>=2.1.0
+Pillow>=10.0.0
+roboflow>=1.1.0
+supervision>=0.25.0
+torch>=2.2.0
+transformers>=4.40.0
+ultralytics>=8.3.0
 
 # FastAPI and API dependencies
-fastapi==0.109.0
-uvicorn[standard]==0.27.0
-python-multipart==0.0.6
-pydantic-settings==2.1.0
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-aiofiles==23.2.1
-httpx==0.26.0
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+python-multipart>=0.0.6
+pydantic-settings>=2.1.0
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+aiofiles>=23.2.0
+httpx>=0.26.0
 
 # Supabase (optional - for production)
-supabase==2.3.0
+supabase>=2.3.0
 
 # Training GUI
-customtkinter==5.2.1
+customtkinter>=5.2.0
